@@ -1,0 +1,157 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 04:06:24 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh NEWY host
+Linux NEWY_host 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Nov 24 01:52:37 2022 from 158.49.0.2
+root@NEWY_host:~# ip route add default via 49.105.2/24
+Error: inet address is expected rather than "49.105.2/24".
+root@NEWY_host:~# ip address show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+11546: ssh@if11547: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether e6:a3:88:11:ee:8c brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 158.49.14.2/16 scope global ssh
+       valid_lft forever preferred_lft forever
+1022: NEWYrouter@if1023: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether d2:96:5c:be:03:f8 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 49.105.0.1/24 scope global NEWYrouter
+       valid_lft forever preferred_lft forever
+root@NEWY_host:~# ip route del default via 49.105.2/24
+Error: inet address is expected rather than "49.105.2/24".
+root@NEWY_host:~# ip route add default via 49.105.0.2/24
+Error: inet address is expected rather than "49.105.0.2/24".
+root@NEWY_host:~# root@NEWY_host:~# 
+-bash: root@NEWY_host:~#: command not found
+root@NEWY_host:~# ip route add default via 49.105.0.2
+root@NEWY_host:~# ping 49.101.0.2
+PING 49.101.0.2 (49.101.0.2) 56(84) bytes of data.
+64 bytes from 49.101.0.2: icmp_seq=1 ttl=63 time=0.575 ms
+64 bytes from 49.101.0.2: icmp_seq=2 ttl=63 time=0.372 ms
+64 bytes from 49.101.0.2: icmp_seq=3 ttl=63 time=0.366 ms
+64 bytes from 49.101.0.2: icmp_seq=4 ttl=63 time=0.366 ms
+^C
+--- 49.101.0.2 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3061ms
+rtt min/avg/max/mdev = 0.366/0.419/0.575/0.093 ms
+root@NEWY_host:~# ping 49.101.0.1 -c 10
+PING 49.101.0.1 (49.101.0.1) 56(84) bytes of data.
+64 bytes from 49.101.0.1: icmp_seq=1 ttl=62 time=0.622 ms
+64 bytes from 49.101.0.1: icmp_seq=2 ttl=62 time=0.466 ms
+64 bytes from 49.101.0.1: icmp_seq=3 ttl=62 time=0.548 ms
+64 bytes from 49.101.0.1: icmp_seq=4 ttl=62 time=0.482 ms
+64 bytes from 49.101.0.1: icmp_seq=5 ttl=62 time=0.350 ms
+64 bytes from 49.101.0.1: icmp_seq=6 ttl=62 time=0.400 ms
+64 bytes from 49.101.0.1: icmp_seq=7 ttl=62 time=0.374 ms
+64 bytes from 49.101.0.1: icmp_seq=8 ttl=62 time=0.400 ms
+64 bytes from 49.101.0.1: icmp_seq=9 ttl=62 time=0.490 ms
+64 bytes from 49.101.0.1: icmp_seq=10 ttl=62 time=0.481 ms
+
+--- 49.101.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9204ms
+rtt min/avg/max/mdev = 0.350/0.461/0.622/0.080 ms
+root@NEWY_host:~# ping 49.103.0.1 -c 10
+PING 49.103.0.1 (49.103.0.1) 56(84) bytes of data.
+64 bytes from 49.103.0.1: icmp_seq=1 ttl=62 time=2.35 ms
+64 bytes from 49.103.0.1: icmp_seq=2 ttl=62 time=2.30 ms
+64 bytes from 49.103.0.1: icmp_seq=3 ttl=62 time=2.21 ms
+64 bytes from 49.103.0.1: icmp_seq=4 ttl=62 time=2.12 ms
+64 bytes from 49.103.0.1: icmp_seq=5 ttl=62 time=2.10 ms
+64 bytes from 49.103.0.1: icmp_seq=6 ttl=62 time=2.22 ms
+64 bytes from 49.103.0.1: icmp_seq=7 ttl=62 time=2.09 ms
+64 bytes from 49.103.0.1: icmp_seq=8 ttl=62 time=2.17 ms
+64 bytes from 49.103.0.1: icmp_seq=9 ttl=62 time=2.16 ms
+64 bytes from 49.103.0.1: icmp_seq=10 ttl=62 time=2.09 ms
+
+--- 49.103.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9012ms
+rtt min/avg/max/mdev = 2.095/2.183/2.358/0.103 ms
+root@NEWY_host:~# ping 49.108.0.1 -c 10
+PING 49.108.0.1 (49.108.0.1) 56(84) bytes of data.
+64 bytes from 49.108.0.1: icmp_seq=1 ttl=62 time=0.419 ms
+64 bytes from 49.108.0.1: icmp_seq=2 ttl=62 time=0.184 ms
+64 bytes from 49.108.0.1: icmp_seq=3 ttl=62 time=0.118 ms
+64 bytes from 49.108.0.1: icmp_seq=4 ttl=62 time=0.152 ms
+64 bytes from 49.108.0.1: icmp_seq=5 ttl=62 time=0.198 ms
+64 bytes from 49.108.0.1: icmp_seq=6 ttl=62 time=0.157 ms
+64 bytes from 49.108.0.1: icmp_seq=7 ttl=62 time=0.221 ms
+64 bytes from 49.108.0.1: icmp_seq=8 ttl=62 time=0.141 ms
+64 bytes from 49.108.0.1: icmp_seq=9 ttl=62 time=0.175 ms
+64 bytes from 49.108.0.1: icmp_seq=10 ttl=62 time=0.176 ms
+
+--- 49.108.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9212ms
+rtt min/avg/max/mdev = 0.118/0.194/0.419/0.080 ms
+root@NEWY_host:~# ping 49.107.0.1 -c 10
+PING 49.107.0.1 (49.107.0.1) 56(84) bytes of data.
+64 bytes from 49.107.0.1: icmp_seq=1 ttl=62 time=0.297 ms
+64 bytes from 49.107.0.1: icmp_seq=2 ttl=62 time=0.360 ms
+64 bytes from 49.107.0.1: icmp_seq=3 ttl=62 time=0.383 ms
+64 bytes from 49.107.0.1: icmp_seq=4 ttl=62 time=0.386 ms
+64 bytes from 49.107.0.1: icmp_seq=5 ttl=62 time=0.368 ms
+64 bytes from 49.107.0.1: icmp_seq=6 ttl=62 time=0.407 ms
+64 bytes from 49.107.0.1: icmp_seq=7 ttl=62 time=0.409 ms
+64 bytes from 49.107.0.1: icmp_seq=8 ttl=62 time=0.446 ms
+64 bytes from 49.107.0.1: icmp_seq=9 ttl=62 time=0.386 ms
+64 bytes from 49.107.0.1: icmp_seq=10 ttl=62 time=0.379 ms
+
+--- 49.107.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9224ms
+rtt min/avg/max/mdev = 0.297/0.382/0.446/0.037 ms
+root@NEWY_host:~# ping 49.105.0.1 -c 10
+PING 49.105.0.1 (49.105.0.1) 56(84) bytes of data.
+64 bytes from 49.105.0.1: icmp_seq=1 ttl=64 time=0.041 ms
+64 bytes from 49.105.0.1: icmp_seq=2 ttl=64 time=0.027 ms
+64 bytes from 49.105.0.1: icmp_seq=3 ttl=64 time=0.029 ms
+64 bytes from 49.105.0.1: icmp_seq=4 ttl=64 time=0.094 ms
+64 bytes from 49.105.0.1: icmp_seq=5 ttl=64 time=0.039 ms
+64 bytes from 49.105.0.1: icmp_seq=6 ttl=64 time=0.055 ms
+64 bytes from 49.105.0.1: icmp_seq=7 ttl=64 time=0.034 ms
+64 bytes from 49.105.0.1: icmp_seq=8 ttl=64 time=0.041 ms
+64 bytes from 49.105.0.1: icmp_seq=9 ttl=64 time=0.057 ms
+64 bytes from 49.105.0.1: icmp_seq=10 ttl=64 time=0.047 ms
+
+--- 49.105.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9194ms
+rtt min/avg/max/mdev = 0.027/0.046/0.094/0.019 ms
+root@NEWY_host:~# ping 49.106.0.1 -c 10
+PING 49.106.0.1 (49.106.0.1) 56(84) bytes of data.
+64 bytes from 49.106.0.1: icmp_seq=1 ttl=62 time=0.265 ms
+64 bytes from 49.106.0.1: icmp_seq=2 ttl=62 time=0.207 ms
+64 bytes from 49.106.0.1: icmp_seq=3 ttl=62 time=0.210 ms
+64 bytes from 49.106.0.1: icmp_seq=4 ttl=62 time=0.221 ms
+64 bytes from 49.106.0.1: icmp_seq=5 ttl=62 time=0.159 ms
+64 bytes from 49.106.0.1: icmp_seq=6 ttl=62 time=0.197 ms
+64 bytes from 49.106.0.1: icmp_seq=7 ttl=62 time=0.166 ms
+64 bytes from 49.106.0.1: icmp_seq=8 ttl=62 time=0.256 ms
+64 bytes from 49.106.0.1: icmp_seq=9 ttl=62 time=0.213 ms
+64 bytes from 49.106.0.1: icmp_seq=10 ttl=62 time=0.185 ms
+
+--- 49.106.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9193ms
+rtt min/avg/max/mdev = 0.159/0.207/0.265/0.037 ms
+root@NEWY_host:~# 

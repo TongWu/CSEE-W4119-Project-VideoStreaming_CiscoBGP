@@ -1,0 +1,1736 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 04:38:48 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh PARI router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+180.0.49.2      4        100      6941      6942        0    0    0 4d19h37m            1        2
+
+Total number of neighbors 1
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.5.1 remote-as 3
+% Can not configure the local system as neighbor
+PARI_router(config-router)# neighbor 49.0.5.0/24 remote-as 3
+% Create the peer-group or interface first
+PARI_router(config-router)# exit                         
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+180.0.49.2      4        100      6947      6948        0    0    0 4d19h43m            1        2
+
+Total number of neighbors 1
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.4.1 remote-as 49
+% Can not configure the local system as neighbor
+PARI_router(config-router)# neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.5.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.6.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.1.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.3.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      6953      6954        0    0    0 4d19h49m            1        2
+
+Total number of neighbors 6
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49         3         6        0    0    0 00:00:14            0        2
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      6955      6956        0    0    0 4d19h51m            1        2
+
+Total number of neighbors 6
+PARI_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 100.0.0.0/8 [20/0] via 180.0.49.2, ext_100_LOND, weight 1, 4d19h53m
+PARI_router# show ip bgp
+BGP table version is 2, local router ID is 180.0.49.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 49.0.0.0/8       0.0.0.0                  0         32768 i
+*> 100.0.0.0/8      180.0.49.2               0             0 100 i
+
+Displayed  2 routes and 2 total paths
+PARI_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=63 time=2.67 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=63 time=2.20 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=63 time=2.20 ms
+64 bytes from 100.101.0.1: icmp_seq=4 ttl=63 time=2.18 ms
+64 bytes from 100.101.0.1: icmp_seq=5 ttl=63 time=2.19 ms
+64 bytes from 100.101.0.1: icmp_seq=6 ttl=63 time=2.20 ms
+64 bytes from 100.101.0.1: icmp_seq=7 ttl=63 time=2.20 ms
+64 bytes from 100.101.0.1: icmp_seq=8 ttl=63 time=2.20 ms
+64 bytes from 100.101.0.1: icmp_seq=9 ttl=63 time=2.66 ms
+^C
+--- 100.101.0.1 ping statistics ---
+9 packets transmitted, 9 received, 0% packet loss, time 8011ms
+rtt min/avg/max/mdev = 2.188/2.304/2.677/0.205 ms
+PARI_router# ping 180.0.49.2 
+PING 180.0.49.2 (180.0.49.2) 56(84) bytes of data.
+64 bytes from 180.0.49.2: icmp_seq=1 ttl=64 time=2.48 ms
+64 bytes from 180.0.49.2: icmp_seq=2 ttl=64 time=2.10 ms
+64 bytes from 180.0.49.2: icmp_seq=3 ttl=64 time=2.21 ms
+64 bytes from 180.0.49.2: icmp_seq=4 ttl=64 time=2.14 ms
+^C
+--- 180.0.49.2 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 2.101/2.233/2.480/0.158 ms
+PARI_router# ^C
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# 
+PARI_router(config-router)# no neighbor 49.0.1.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.3.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.5.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.6.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+180.0.49.2      4        100      6975      6976        0    0    0 4d20h11m            1        2
+
+Total number of neighbors 1
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no bgp ebgp-requires-policy
+PARI_router(config-router)# no bgp network import-check
+PARI_router(config-router)# neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6976      6977        0    0    0 4d20h12m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6977      6978        0    0    0 4d20h13m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6977      6978        0    0    0 4d20h13m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6977      6978        0    0    0 4d20h13m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp
+BGP table version is 2, local router ID is 180.0.49.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 49.0.0.0/8       0.0.0.0                  0         32768 i
+*> 100.0.0.0/8      180.0.49.2               0             0 100 i
+
+Displayed  2 routes and 2 total paths
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no bgp ebgp-requires-policy
+PARI_router(config-router)# no bgp network import-check
+PARI_router(config-router)# no neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+180.0.49.2      4        100      6980      6981        0    0    0 4d20h16m            1        2
+
+Total number of neighbors 1
+PARI_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=63 time=2.64 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=63 time=2.19 ms
+^C
+--- 100.101.0.1 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 2.191/2.418/2.645/0.227 ms
+PARI_router# ping 180.0.49.2 
+PING 180.0.49.2 (180.0.49.2) 56(84) bytes of data.
+64 bytes from 180.0.49.2: icmp_seq=1 ttl=64 time=2.11 ms
+64 bytes from 180.0.49.2: icmp_seq=2 ttl=64 time=2.15 ms
+^C
+--- 180.0.49.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 2.112/2.133/2.155/0.050 ms
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no bgp ebgp-requires-policy
+PARI_router(config-router)# no bgp network import-check
+PARI_router(config-router)# neighbor 49.101.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.101.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      6981      6982        0    0    0 4d20h17m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.101.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      6982      6983        0    0    0 4d20h18m            1        2
+
+Total number of neighbors 2
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no bgp ebgp-requires-policy
+PARI_router(config-router)# no bgp network import-check
+PARI_router(config-router)# no neighbor 49.101.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.101.0.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.101.0.2      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6982      6983        0    0    0 4d20h18m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.101.0.2      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6982      6983        0    0    0 4d20h19m            1        2
+
+Total number of neighbors 2
+PARI_router# ping 49.101.0.2
+PING 49.101.0.2 (49.101.0.2) 56(84) bytes of data.
+64 bytes from 49.101.0.2: icmp_seq=1 ttl=64 time=0.186 ms
+64 bytes from 49.101.0.2: icmp_seq=2 ttl=64 time=0.163 ms
+64 bytes from 49.101.0.2: icmp_seq=3 ttl=64 time=0.150 ms
+^C
+--- 49.101.0.2 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2034ms
+rtt min/avg/max/mdev = 0.150/0.166/0.186/0.018 ms
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.101.0.2      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6983      6984        0    0    0 4d20h19m            1        2
+
+Total number of neighbors 2
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no bgp ebgp-requires-policy
+PARI_router(config-router)# no bgp network import-check
+PARI_router(config-router)# no neighbor 49.101.0.2 remote-as 49
+PARI_router(config-router)# neighbor 49.151.0.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.2      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      6984      6985        0    0    0 4d20h20m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.2      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      6984      6985        0    0    0 4d20h20m            1        2
+
+Total number of neighbors 2
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.2 remote-as 49
+PARI_router(config-router)# neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp
+BGP table version is 2, local router ID is 180.0.49.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 49.0.0.0/8       0.0.0.0                  0         32768 i
+*> 100.0.0.0/8      180.0.49.2               0             0 100 i
+
+Displayed  2 routes and 2 total paths
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6985      6986        0    0    0 4d20h21m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp sum 
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6985      6986        0    0    0 4d20h21m            1        2
+
+Total number of neighbors 2
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 3, using 64 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.2        4         49         0         1        0    0    0    never       Active        0
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      6986      6987        0    0    0 4d20h22m            1        2
+
+Total number of neighbors 3
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+180.0.49.2      4        100      6988      6989        0    0    0 4d20h24m            1        2
+
+Total number of neighbors 1
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.158.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.155.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp
+BGP table version is 2, local router ID is 180.0.49.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 49.0.0.0/8       0.0.0.0                  0         32768 i
+*> 100.0.0.0/8      180.0.49.2               0             0 100 i
+
+Displayed  2 routes and 2 total paths
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+49.155.0.1      4         49         0         2        0    0    0    never       Active        0
+49.158.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      6996      6997        0    0    0 4d20h32m            1        2
+
+Total number of neighbors 4
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.155.0.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.158.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+180.0.49.2      4        100      6996      6998        0    0    0 4d20h33m            1        2
+
+Total number of neighbors 1
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.4.1 remote-as 49
+% Can not configure the local system as neighbor
+PARI_router(config-router)# neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.5.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.6.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.1.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.3.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      6998      6999        0    0    0 4d20h34m            1        2
+
+Total number of neighbors 6
+PARI_router# conf t
+PARI_router(config)# no neighbor 49.0.3.2 remote-as 49
+% Unknown command: no neighbor 49.0.3.2 remote-as 49
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.0.3.2 remote-as 49
+PARI_router(config-router)# neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49         5         5        0    0    0 00:00:49       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7000      7001        0    0    0 4d20h36m            1        2
+
+Total number of neighbors 6
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49         8        10        0    0    0 00:00:29            0        2
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7002      7003        0    0    0 4d20h38m            1        2
+
+Total number of neighbors 6
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49        11        12        0    0    0 00:02:08            1        2
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7003      7004        0    0    0 4d20h39m            1        2
+
+Total number of neighbors 6
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49        11        12        0    0    0 00:02:10            1        2
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7003      7004        0    0    0 4d20h39m            1        2
+
+Total number of neighbors 6
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49        11        12        0    0    0 00:02:11            1        2
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7003      7004        0    0    0 4d20h39m            1        2
+
+Total number of neighbors 6
+PARI_router# ping 100.0.0.0
+PING 100.0.0.0 (100.0.0.0) 56(84) bytes of data.
+^C
+--- 100.0.0.0 ping statistics ---
+4 packets transmitted, 0 received, 100% packet loss, time 3056ms
+
+PARI_router# ping 100.0.101.0
+PING 100.0.101.0 (100.0.101.0) 56(84) bytes of data.
+^C
+--- 100.0.101.0 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1010ms
+
+PARI_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=63 time=2.83 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=63 time=2.38 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=63 time=2.15 ms
+^C
+--- 100.101.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 2.151/2.457/2.831/0.281 ms
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49        21        21        0    0    0 00:00:16            0        2
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49         0         3        0    0    0    never       Active        0
+180.0.49.2      4        100      7009      7010        0    0    0 4d20h45m            1        2
+
+Total number of neighbors 6
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7010      7011        0    0    0 4d20h46m            1        2
+
+Total number of neighbors 4
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.151.0.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit 
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.2      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7012      7013        0    0    0 4d20h48m            1        2
+
+Total number of neighbors 5
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.2 remote-as 49
+PARI_router(config-router)# neighbor 49.101.0.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.101.0.2      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7013      7014        0    0    0 4d20h49m            1        2
+
+Total number of neighbors 5
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.101.0.2      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7014      7015        0    0    0 4d20h50m            1        2
+
+Total number of neighbors 5
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.101.0.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7015      7016        0    0    0 4d20h51m            1        2
+
+Total number of neighbors 4
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.101.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.101.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7015      7016        0    0    0 4d20h51m            1        2
+
+Total number of neighbors 5
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.101.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7016      7017        0    0    0 4d20h52m            1        2
+
+Total number of neighbors 5
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.101.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7016      7017        0    0    0 4d20h52m            1        2
+
+Total number of neighbors 4
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7017      7018        0    0    0 4d20h53m            1        2
+
+Total number of neighbors 4
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.151.0.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.2      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7017      7018        0    0    0 4d20h53m            1        2
+
+Total number of neighbors 5
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7017      7018        0    0    0 4d20h53m            1        2
+
+Total number of neighbors 4
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7017      7018        0    0    0 4d20h53m            1        2
+
+Total number of neighbors 5
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7018      7019        0    0    0 4d20h54m            1        2
+
+Total number of neighbors 5
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.1.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.5.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.6.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+180.0.49.2      4        100      7019      7020        0    0    0 4d20h55m            1        2
+
+Total number of neighbors 1
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7020      7021        0    0    0 4d20h56m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7021      7022        0    0    0 4d20h57m            1        2
+
+Total number of neighbors 2
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 3, using 64 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.2        4         49         0         1        0    0    0    never       Active        0
+49.151.0.1      4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7021      7022        0    0    0 4d20h57m            1        2
+
+Total number of neighbors 3
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.2        4         49         4         7        0    0    0 00:01:46            0        2
+180.0.49.2      4        100      7023      7024        0    0    0 4d20h59m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.2        4         49        20        23        0    0    0 00:17:05            0        2
+180.0.49.2      4        100      7038      7039        0    0    0 4d21h14m            1        2
+
+Total number of neighbors 2
+PARI_router# neighbor 49.0.4.2 next-hop-self
+% Unknown command: neighbor 49.0.4.2 next-hop-self
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.4.2 next-hop-self
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.2        4         49        21        26        0    0    0 00:18:15            0        2
+180.0.49.2      4        100      7039      7040        0    0    0 4d21h15m            1        2
+
+Total number of neighbors 2
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.2        4         49        46        51        0    0    0 00:43:15            0        2
+180.0.49.2      4        100      7064      7065        0    0    0 4d21h40m            1        2
+
+Total number of neighbors 2
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.5.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.6.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.3.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.1.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.5.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.6.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.3.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.1.1 next-hop-self
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49       150       155        0    0    0 02:27:05            0        2
+49.0.5.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7168      7169        0    0    0 4d23h24m            1        2
+
+Total number of neighbors 6
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.10.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 7, using 149 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49       166       171        0    0    0 02:43:40            0        2
+49.0.5.2        4         49        15        17        0    0    0 00:12:52            0        2
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.0.10.2       4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7185      7186        0    0    0 4d23h41m            1        2
+
+Total number of neighbors 7
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 7, using 149 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49       167       172        0    0    0 02:44:53            0        2
+49.0.5.2        4         49        17        19        0    0    0 00:14:05            0        2
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.0.10.2       4         49         3         6        0    0    0 00:00:25            0        2
+180.0.49.2      4        100      7186      7187        0    0    0 4d23h42m            1        2
+
+Total number of neighbors 7
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.10.2 next-hop-self
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.0.1.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.1.2 remote-as 49
+% Can not configure the local system as neighbor
+PARI_router(config-router)# neighbor 49.0.2.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.2.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.3.1 remote-as 49
+% Can not configure the local system as neighbor
+PARI_router(config-router)# neighbor 49.0.3.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.4.1 remote-as 49
+% Can not configure the local system as neighbor
+PARI_router(config-router)# neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.5.1 remote-as 49
+% Can not configure the local system as neighbor
+PARI_router(config-router)# neighbor 49.0.5.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.6.1 remote-as 49
+% Can not configure the local system as neighbor
+PARI_router(config-router)# neighbor 49.0.6.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.7.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.7.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.8.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.8.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.9.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.9.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.10.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.10.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.11.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.11.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.12.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.12.2 remote-as 49
+PARI_router(config-router)# neighbor 49.0.13.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.13.2 remote-as 49
+PARI_router(config-router)# 
+PARI_router(config-router)# neighbor 49.0.1.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.1.2 next-hop-self
+% Specify remote-as or peer-group commands first
+PARI_router(config-router)# neighbor 49.0.2.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.2.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.3.1 next-hop-self
+% Specify remote-as or peer-group commands first
+PARI_router(config-router)# neighbor 49.0.3.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.4.1 next-hop-self
+% Specify remote-as or peer-group commands first
+PARI_router(config-router)# neighbor 49.0.4.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.5.1 next-hop-self
+% Specify remote-as or peer-group commands first
+PARI_router(config-router)# neighbor 49.0.5.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.6.1 next-hop-self
+% Specify remote-as or peer-group commands first
+PARI_router(config-router)# neighbor 49.0.6.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.7.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.7.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.8.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.8.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.9.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.9.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.10.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.10.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.11.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.11.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.12.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.12.2 next-hop-self
+PARI_router(config-router)# neighbor 49.0.13.1 next-hop-self
+PARI_router(config-router)# neighbor 49.0.13.2 next-hop-self
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49        15         6        0    0    0    never         Idle        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49       186       191        0    0    0 03:03:05            0        2
+49.0.5.2        4         49        35        37        0    0    0 00:32:17            0        2
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.0.7.1        4         49        15         8        0    0    0    never         Idle        0
+49.0.7.2        4         49         3         7        0    0    0 00:00:46            0        2
+49.0.8.1        4         49        15         6        0    0    0    never         Idle        0
+49.0.8.2        4         49        23        15        0    0    0    never         Idle        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49         0         0        0    0    0    never       Active        0
+49.0.10.1       4         49        15         8        0    0    0    never         Idle        0
+49.0.10.2       4         49        21        26        0    0    0 00:18:37            0        2
+49.0.11.1       4         49        15         6        0    0    0    never         Idle        0
+49.0.11.2       4         49         0         0        0    0    0    never       Active        0
+49.0.12.1       4         49        15         9        0    0    0    never         Idle        0
+49.0.12.2       4         49         0         0        0    0    0    never       Active        0
+49.0.13.1       4         49         0         0        0    0    0    never       Active        0
+49.0.13.2       4         49         0         0        0    0    0    never       Active        0
+180.0.49.2      4        100      7204      7205        0    0    0 5d00h00m            1        2
+
+Total number of neighbors 22
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49        94        49        0    0    0    never         Idle        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49       213       218        0    0    0 03:30:49            0        2
+49.0.5.2        4         49        63        65        0    0    0 01:00:01            0        2
+49.0.6.2        4         49        19        21        0    0    0 00:16:30            0        2
+49.0.7.1        4         49        92        56        0    0    0    never         Idle        0
+49.0.7.2        4         49        31        35        0    0    0 00:28:30            0        2
+49.0.8.1        4         49        60        28        0    0    0    never         Idle        0
+49.0.8.2        4         49        63        52        0    0    0 00:25:45            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49        60        45        0    0    0    never         Idle        0
+49.0.10.1       4         49        87        47        0    0    0    never         Idle        0
+49.0.10.2       4         49        49        54        0    0    0 00:46:21            0        2
+49.0.11.1       4         49       229       171        0    0    0    never         Idle        0
+49.0.11.2       4         49        26        28        0    0    0 00:23:52            0        2
+49.0.12.1       4         49        49        42        0    0    0 00:25:40            0        2
+49.0.12.2       4         49        19        21        0    0    0 00:16:23            0        2
+49.0.13.1       4         49        26        28        0    0    0 00:24:00            0        2
+49.0.13.2       4         49        19        21        0    0    0 00:16:17            0        2
+180.0.49.2      4        100      7232      7233        0    0    0 5d00h28m            1        2
+
+Total number of neighbors 22
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.151.0.1 next-hop-self
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       154        84        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49        82        84        0    0    0 01:19:10            0        2
+49.0.6.2        4         49        38        40        0    0    0 00:35:39            0        2
+49.0.7.1        4         49       136        80        0    0    0    never       Active        0
+49.0.7.2        4         49        50        54        0    0    0 00:47:39            0        2
+49.0.8.1        4         49       128        71        0    0    0    never       Active        0
+49.0.8.2        4         49        82        71        0    0    0 00:44:54            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49        90        60        0    0    0    never         Idle        0
+49.0.10.1       4         49       182       103        0    0    0    never         Idle        0
+49.0.10.2       4         49        68        73        0    0    0 01:05:30            0        2
+49.0.11.1       4         49       390       291        0    0    0    never         Idle        0
+49.0.11.2       4         49        46        48        0    0    0 00:43:01            0        2
+49.0.12.1       4         49        68        61        0    0    0 00:44:49            0        2
+49.0.12.2       4         49        38        40        0    0    0 00:35:32            0        2
+49.0.13.1       4         49        46        48        0    0    0 00:43:09            0        2
+49.0.13.2       4         49        38        40        0    0    0 00:35:26            0        2
+49.151.0.1      4         49         0         1        0    0    0    never       Active        0
+180.0.49.2      4        100      7251      7252        0    0    0 5d00h47m            1        2
+
+Total number of neighbors 22
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.1 update-source Loopback0
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       154        85        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49        84        86        0    0    0 01:21:17            0        2
+49.0.6.2        4         49        40        42        0    0    0 00:37:46            0        2
+49.0.7.1        4         49       136        81        0    0    0    never       Active        0
+49.0.7.2        4         49        52        56        0    0    0 00:49:46            0        2
+49.0.8.1        4         49       128        72        0    0    0    never       Active        0
+49.0.8.2        4         49        85        74        0    0    0 00:47:01            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       110        72        0    0    0    never         Idle        0
+49.0.10.1       4         49       188       105        0    0    0    never         Idle        0
+49.0.10.2       4         49        70        75        0    0    0 01:07:37            0        2
+49.0.11.1       4         49       396       294        0    0    0    never         Idle        0
+49.0.11.2       4         49        48        50        0    0    0 00:45:08            0        2
+49.0.12.1       4         49        70        63        0    0    0 00:46:56            0        2
+49.0.12.2       4         49        40        42        0    0    0 00:37:39            0        2
+49.0.13.1       4         49        48        50        0    0    0 00:45:16            0        2
+49.0.13.2       4         49        40        42        0    0    0 00:37:33            0        2
+49.151.0.1      4         49         0         2        0    0    0    never       Active        0
+180.0.49.2      4        100      7253      7254        0    0    0 5d00h49m            1        2
+
+Total number of neighbors 22
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.151.0.1 update-source Loopback0
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       154        88        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49        89        91        0    0    0 01:26:13            0        2
+49.0.6.2        4         49        45        47        0    0    0 00:42:42            0        2
+49.0.7.1        4         49       136        83        0    0    0    never       Active        0
+49.0.7.2        4         49        57        61        0    0    0 00:54:42            0        2
+49.0.8.1        4         49       128        74        0    0    0    never       Active        0
+49.0.8.2        4         49        89        78        0    0    0 00:51:57            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       119        76        0    0    0    never         Idle        0
+49.0.10.1       4         49       194       107        0    0    0    never         Idle        0
+49.0.10.2       4         49        75        80        0    0    0 01:12:33            0        2
+49.0.11.1       4         49       402       296        0    0    0    never         Idle        0
+49.0.11.2       4         49        53        55        0    0    0 00:50:04            0        2
+49.0.12.1       4         49        75        68        0    0    0 00:51:52            0        2
+49.0.12.2       4         49        45        47        0    0    0 00:42:35            0        2
+49.0.13.1       4         49        53        55        0    0    0 00:50:12            0        2
+49.0.13.2       4         49        45        47        0    0    0 00:42:29            0        2
+49.151.0.1      4         49         0         4        0    0    0    never       Active        0
+180.0.49.2      4        100      7258      7259        0    0    0 5d00h54m            1        2
+
+Total number of neighbors 22
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# ip route 49.151.0.1 49.0.4.2
+% Unknown command: ip route 49.151.0.1 49.0.4.2
+PARI_router(config-router)# ip route 49.151.0.1 49.101.0.2 49.0.4.2
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       154        89        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49        91        93        0    0    0 01:28:16            0        2
+49.0.6.2        4         49        47        49        0    0    0 00:44:45            0        2
+49.0.7.1        4         49       136        84        0    0    0    never       Active        0
+49.0.7.2        4         49        59        63        0    0    0 00:56:45            0        2
+49.0.8.1        4         49       128        75        0    0    0    never       Active        0
+49.0.8.2        4         49        91        80        0    0    0 00:54:00            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       122        77        0    0    0    never         Idle        0
+49.0.10.1       4         49       197       108        0    0    0    never         Idle        0
+49.0.10.2       4         49        77        82        0    0    0 01:14:36            0        2
+49.0.11.1       4         49       405       297        0    0    0    never         Idle        0
+49.0.11.2       4         49        55        57        0    0    0 00:52:07            0        2
+49.0.12.1       4         49        77        70        0    0    0 00:53:55            0        2
+49.0.12.2       4         49        47        49        0    0    0 00:44:38            0        2
+49.0.13.1       4         49        55        57        0    0    0 00:52:15            0        2
+49.0.13.2       4         49        47        49        0    0    0 00:44:32            0        2
+49.151.0.1      4         49         0         4        0    0    0    never       Active        0
+180.0.49.2      4        100      7260      7261        0    0    0 5d00h56m            1        2
+
+Total number of neighbors 22
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       154        89        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49         0         1        0    0    0    never       Active        0
+49.0.5.2        4         49        92        94        0    0    0 01:29:40            0        2
+49.0.6.2        4         49        49        51        0    0    0 00:46:09            0        2
+49.0.7.1        4         49       136        85        0    0    0    never       Active        0
+49.0.7.2        4         49        61        65        0    0    0 00:58:09            0        2
+49.0.8.1        4         49       128        76        0    0    0    never       Active        0
+49.0.8.2        4         49        93        82        0    0    0 00:55:24            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       122        77        0    0    0    never         Idle        0
+49.0.10.1       4         49       200       110        0    0    0    never         Idle        0
+49.0.10.2       4         49        79        84        0    0    0 01:16:00            0        2
+49.0.11.1       4         49       408       298        0    0    0    never         Idle        0
+49.0.11.2       4         49        56        58        0    0    0 00:53:31            0        2
+49.0.12.1       4         49        79        72        0    0    0 00:55:19            0        2
+49.0.12.2       4         49        49        51        0    0    0 00:46:02            0        2
+49.0.13.1       4         49        56        58        0    0    0 00:53:39            0        2
+49.0.13.2       4         49        48        50        0    0    0 00:45:56            0        2
+180.0.49.2      4        100      7262      7263        0    0    0 5d00h58m            1        2
+
+Total number of neighbors 22
+PARI_router# conf y
+% Unknown command: conf y
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)#  neighbor 49.0.4.2 next-hop-self
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       154        90        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.2        4         49         3         8        0    0    0 00:00:27            0        2
+49.0.5.2        4         49        93        95        0    0    0 01:30:30            0        2
+49.0.6.2        4         49        49        51        0    0    0 00:46:59            0        2
+49.0.7.1        4         49       139        87        0    0    0    never         Idle        0
+49.0.7.2        4         49        61        65        0    0    0 00:58:59            0        2
+49.0.8.1        4         49       128        76        0    0    0    never       Active        0
+49.0.8.2        4         49        94        83        0    0    0 00:56:14            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       125        79        0    0    0    never         Idle        0
+49.0.10.1       4         49       203       111        0    0    0    never         Idle        0
+49.0.10.2       4         49        79        84        0    0    0 01:16:50            0        2
+49.0.11.1       4         49       411       299        0    0    0    never         Idle        0
+49.0.11.2       4         49        57        59        0    0    0 00:54:21            0        2
+49.0.12.1       4         49        80        73        0    0    0 00:56:09            0        2
+49.0.12.2       4         49        49        51        0    0    0 00:46:52            0        2
+49.0.13.1       4         49        57        59        0    0    0 00:54:29            0        2
+49.0.13.2       4         49        49        51        0    0    0 00:46:46            0        2
+180.0.49.2      4        100      7262      7263        0    0    0 5d00h58m            1        2
+
+Total number of neighbors 22
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 100.0.0.0/8 [20/0] via 180.0.49.2, ext_100_LOND, weight 1, 5d01h03m
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.151.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.151.0.1 update-source lo
+PARI_router(config-router)# neighbor 49.151.0.1 next-hop-self   
+PARI_router(config-router)# exit
+PARI_router(config)# exit 
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       168       104        0    0    0 00:00:12            0        2
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49        99       101        0    0    0 01:36:27            0        2
+49.0.6.2        4         49        55        57        0    0    0 00:52:56            0        2
+49.0.7.1        4         49       148        91        0    0    0    never         Idle        0
+49.0.7.2        4         49        67        71        0    0    0 01:04:56            0        2
+49.0.8.1        4         49       178       117        0    0    0 00:02:00       Active        0
+49.0.8.2        4         49       100        89        0    0    0 01:02:11            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       134        83        0    0    0    never         Idle        0
+49.0.10.1       4         49       213       120        0    0    0    never         Idle        0
+49.0.10.2       4         49        85        90        0    0    0 01:22:47            0        2
+49.0.11.1       4         49       420       304        0    0    0    never         Idle        0
+49.0.11.2       4         49        63        65        0    0    0 01:00:18            0        2
+49.0.12.1       4         49        86        79        0    0    0 01:02:06            0        2
+49.0.12.2       4         49        55        57        0    0    0 00:52:49            0        2
+49.0.13.1       4         49        63        65        0    0    0 01:00:26            0        2
+49.0.13.2       4         49        55        57        0    0    0 00:52:43            0        2
+49.151.0.1      4         49         0         2        0    0    0    never       Active        0
+180.0.49.2      4        100      7268      7269        0    0    0 5d01h04m            1        2
+
+Total number of neighbors 22
+PARI_router# ^C
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       171       107        0    0    0 00:03:04            0        2
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.2        4         49       102       104        0    0    0 01:39:19            0        2
+49.0.6.2        4         49        58        60        0    0    0 00:55:48            0        2
+49.0.7.1        4         49       191       123        0    0    0    never         Idle        0
+49.0.7.2        4         49        70        74        0    0    0 01:07:48            0        2
+49.0.8.1        4         49       196       126        0    0    0 00:04:52         Idle        0
+49.0.8.2        4         49       103        92        0    0    0 01:05:03            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       137        85        0    0    0    never         Idle        0
+49.0.10.1       4         49       248       151        0    0    0    never         Idle        0
+49.0.10.2       4         49        88        93        0    0    0 01:25:39            0        2
+49.0.11.1       4         49       423       305        0    0    0    never         Idle        0
+49.0.11.2       4         49        66        68        0    0    0 01:03:10            0        2
+49.0.12.1       4         49        88        81        0    0    0 01:04:58            0        2
+49.0.12.2       4         49        58        60        0    0    0 00:55:41            0        2
+49.0.13.1       4         49        66        68        0    0    0 01:03:18            0        2
+49.0.13.2       4         49        58        60        0    0    0 00:55:35            0        2
+49.151.0.1      4         49         3         8        0    0    0 00:00:13            0        2
+180.0.49.2      4        100      7271      7272        0    0    0 5d01h07m            1        2
+
+Total number of neighbors 22
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.0.5.2
+PARI_router(config-router)# neighbor 49.155.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.155.0.1 next-hop-self 
+PARI_router(config-router)# neighbor 49.155.0.1 update-source lo
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       173       108        0    0    0 00:01:53       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.6.2        4         49        60        62        0    0    0 00:57:55            0        2
+49.0.7.1        4         49       197       126        0    0    0    never       Active        0
+49.0.7.2        4         49        72        76        0    0    0 01:09:55            0        2
+49.0.8.1        4         49       196       127        0    0    0 00:06:59       Active        0
+49.0.8.2        4         49       105        94        0    0    0 01:07:10            0        2
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       140        86        0    0    0    never         Idle        0
+49.0.10.1       4         49       253       157        0    0    0 00:00:23       Active        0
+49.0.10.2       4         49        90        95        0    0    0 01:27:46            0        2
+49.0.11.1       4         49       426       306        0    0    0    never         Idle        0
+49.0.11.2       4         49        68        70        0    0    0 01:05:17            0        2
+49.0.12.1       4         49        91        84        0    0    0 01:07:05            0        2
+49.0.12.2       4         49        60        62        0    0    0 00:57:48            0        2
+49.0.13.1       4         49        68        70        0    0    0 01:05:25            0        2
+49.0.13.2       4         49        60        62        0    0    0 00:57:42            0        2
+49.151.0.1      4         49         5        10        0    0    0 00:02:20            0        2
+49.155.0.1      4         49         6        15        0    0    0 00:00:05            0        2
+180.0.49.2      4        100      7273      7274        0    0    0 5d01h09m            1        2
+
+Total number of neighbors 22
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# no neighbor 49.0.1.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.1.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.2.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.2.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.3.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.3.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.4.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.4.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.5.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.5.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.6.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.6.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.7.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.7.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.8.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.8.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.9.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.9.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.10.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.10.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.11.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.11.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.12.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.12.2 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.13.1 remote-as 49
+PARI_router(config-router)# no neighbor 49.0.13.2 remote-as 49
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 3, using 64 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         8        13        0    0    0 00:05:44            0        2
+49.155.0.1      4         49         9        18        0    0    0 00:03:29            0        2
+180.0.49.2      4        100      7277      7278        0    0    0 5d01h13m            1        2
+
+Total number of neighbors 3
+PARI_router# conf t
+PARI_router(config)# router bgp 49
+PARI_router(config-router)# neighbor 49.155.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.155.0.1 next-hop-self 
+PARI_router(config-router)# neighbor 49.155.0.1 update-source lo
+PARI_router(config-router)# neighbor 49.156.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.156.0.1 next-hop-self 
+PARI_router(config-router)# neighbor 49.156.0.1 update-source lo
+PARI_router(config-router)# neighbor 49.157.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.157.0.1 next-hop-self 
+PARI_router(config-router)# neighbor 49.157.0.1 update-source lo
+PARI_router(config-router)# neighbor 49.158.0.1 remote-as 49
+PARI_router(config-router)# neighbor 49.158.0.1 next-hop-self 
+PARI_router(config-router)# neighbor 49.158.0.1 update-source lo
+PARI_router(config-router)# 
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 6, using 128 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49        11        16        0    0    0 00:08:33            0        2
+49.155.0.1      4         49        12        21        0    0    0 00:06:18            0        2
+49.156.0.1      4         49         0         2        0    0    0    never       Active        0
+49.157.0.1      4         49         0         2        0    0    0    never       Active        0
+49.158.0.1      4         49         0         2        0    0    0    never       Active        0
+180.0.49.2      4        100      7280      7281        0    0    0 5d01h16m            1        2
+
+Total number of neighbors 6
+PARI_router# 

@@ -1,0 +1,162 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 04:08:15 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh NEWY router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+NEWY_router# show interface
+Interface ext_49_PARI is down
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  pseudo interface
+Interface ext_100_LOND is down
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  pseudo interface
+Interface host is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 05:57:47.06
+  Link downs:     1    last: 2022/11/12 05:57:47.06
+  vrf: default
+  index 1020 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: b2:d3:e2:30:99:28
+  inet 49.105.0.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ixp_89 is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:19:23.86
+  Link downs:     1    last: 2022/11/12 11:19:23.85
+  vrf: default
+  index 8420 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: e2:f2:21:1a:5f:c4
+  Interface Type VETH
+  Interface Slave Type None
+Interface lo is up, line protocol is up
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  index 1 metric 0 mtu 65536 speed 0 
+  flags: <UP,LOOPBACK,RUNNING>
+  Type: Loopback
+  inet 49.155.0.1/24
+  Interface Type Other
+  Interface Slave Type None
+Interface port_ATLA is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:42:11.41
+  Link downs:     1    last: 2022/11/12 09:42:11.41
+  vrf: default
+  index 6188 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 5a:55:4b:f9:18:42
+  inet 49.0.11.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_BOST is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:41:55.57
+  Link downs:     1    last: 2022/11/12 09:41:55.57
+  vrf: default
+  index 6184 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: b2:88:54:80:52:8e
+  inet 49.0.10.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_LOND is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:41:23.60
+  Link downs:     1    last: 2022/11/12 09:41:23.60
+  vrf: default
+  index 6178 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 42:65:4c:c3:9c:c0
+  inet 49.0.8.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_MIAM is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:42:27.47
+  Link downs:     1    last: 2022/11/12 09:42:27.47
+  vrf: default
+  index 6192 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 7e:28:b5:c9:72:5f
+  inet 49.0.12.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_PARI is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:40:35.59
+  Link downs:     1    last: 2022/11/12 09:40:35.58
+  vrf: default
+  index 6166 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 02:7f:a2:f2:d0:c1
+  inet 49.0.5.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ssh is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:50:51.41
+  Link downs:     1    last: 2022/11/12 11:50:51.40
+  vrf: default
+  index 11544 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 7e:7f:e1:3a:66:bd
+  inet 158.49.14.1/16
+  Interface Type VETH
+  Interface Slave Type None
+NEWY_router# show interface brief 
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_49_PARI     down    default         
+ext_100_LOND    down    default         
+host            up      default         49.105.0.2/24
+ixp_89          up      default         
+lo              up      default         49.155.0.1/24
+port_ATLA       up      default         49.0.11.1/24
+port_BOST       up      default         49.0.10.1/24
+port_LOND       up      default         49.0.8.2/24
+port_MIAM       up      default         49.0.12.1/24
+port_PARI       up      default         49.0.5.2/24
+ssh             up      default         158.49.14.1/16
+
+NEWY_router# conf t
+NEWY_router(config)# router ospf
+NEWY_router(config-router)# network 49.105.0.2/24 area 0
+NEWY_router(config-router)# network 49.105.0.1/24 area 0
+NEWY_router(config-router)# network 49.155.0.1/24 area 0
+NEWY_router(config-router)# network 49.155.0.2/24 area 0
+NEWY_router(config-router)# 
+NEWY_router(config-router)# network 49.0.11.1/24 area 0
+NEWY_router(config-router)# network 49.0.10.1/24 area 0
+NEWY_router(config-router)# network 49.0.8.2/24 area 0
+NEWY_router(config-router)# network 49.0.12.1/24 area 0
+NEWY_router(config-router)# network 49.0.5.2/24 area 0
+NEWY_router(config-router)# network 198.0.0.0/24 area 0
+NEWY_router(config-router)# exit
+NEWY_router(config)# exit
+NEWY_router# 

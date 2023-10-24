@@ -1,0 +1,52 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 04:22:40 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh ATLA router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+ATLA_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_52_ZURI     up      default         
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# conf t
+ATLA_router(config)# router ospf
+ATLA_router(config-router)# network 49.107.0.2/24 area 0
+ATLA_router(config-router)# network 49.107.0.1/24 area 0
+ATLA_router(config-router)# network 49.157.0.1/24 area 0
+ATLA_router(config-router)# network 49.157.0.2/24 area 0
+ATLA_router(config-router)# 
+ATLA_router(config-router)# network 49.0.13.1/24 area 0
+ATLA_router(config-router)# network 49.0.11.2/24 area 0
+ATLA_router(config-router)# 
+ATLA_router(config-router)# network 198.0.0.0/24 area 0
+ATLA_router(config-router)# exit
+ATLA_router(config)# exit
+ATLA_router# show ip ospf neighbor
+
+Neighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL
+49.155.0.1        1 Full/DR           38.429s 49.0.11.1       port_NEWY:49.0.11.2                  0     0     0
+
+ATLA_router# 

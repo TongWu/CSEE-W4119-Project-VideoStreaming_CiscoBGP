@@ -1,0 +1,152 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Tue Nov 29 21:10:10 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh ZURI router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+ZURI_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ZURI-L2         up      default         
+ZURI-L2.10      down    default         
+ZURI-L2.20      down    default         
+ZURI-L2.30      down    default         
+ext_48_ATLA     up      default         
+lo              up      default         49.152.0.1/24
+measurement_49  up      default         49.0.199.1/24
+port_LOND       up      default         49.0.2.1/24
+port_PARI       up      default         49.0.1.1/24
+ssh             up      default         158.49.11.1/16
+
+ZURI_router# conf t
+ZURI_router(config)# interface ext_48_ALTA
+ZURI_router(config-if)# ip address 48.49.0.2/24
+ZURI_router(config-if)# exit
+ZURI_router(config)# show interface br
+% Unknown command: show interface br
+ZURI_router(config)# exit
+ZURI_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ZURI-L2         up      default         
+ZURI-L2.10      down    default         
+ZURI-L2.20      down    default         
+ZURI-L2.30      down    default         
+ext_48_ALTA     down    default         
+ext_48_ATLA     up      default         
+lo              up      default         49.152.0.1/24
+measurement_49  up      default         49.0.199.1/24
+port_LOND       up      default         49.0.2.1/24
+port_PARI       up      default         49.0.1.1/24
+ssh             up      default         158.49.11.1/16
+
+ZURI_router# conf t 
+ZURI_router(config)# no interface ext_48_ALTA
+ZURI_router(config)# exit
+ZURI_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ZURI-L2         up      default         
+ZURI-L2.10      down    default         
+ZURI-L2.20      down    default         
+ZURI-L2.30      down    default         
+ext_48_ATLA     up      default         
+lo              up      default         49.152.0.1/24
+measurement_49  up      default         49.0.199.1/24
+port_LOND       up      default         49.0.2.1/24
+port_PARI       up      default         49.0.1.1/24
+ssh             up      default         158.49.11.1/16
+
+ZURI_router# conf t    
+ZURI_router(config)# interface ext_48_ATLA
+ZURI_router(config-if)# ip address 48.49.0.2/24
+ZURI_router(config-if)# exit
+ZURI_router(config)# show interface br
+% Unknown command: show interface br
+ZURI_router(config)# exit
+ZURI_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ZURI-L2         up      default         
+ZURI-L2.10      down    default         
+ZURI-L2.20      down    default         
+ZURI-L2.30      down    default         
+ext_48_ATLA     up      default         48.49.0.2/24
+lo              up      default         49.152.0.1/24
+measurement_49  up      default         49.0.199.1/24
+port_LOND       up      default         49.0.2.1/24
+port_PARI       up      default         49.0.1.1/24
+ssh             up      default         158.49.11.1/16
+
+ZURI_router# conf t
+ZURI_router(config)# router bgp 49
+ZURI_router(config-router)# neighbor 
+% Command incomplete: neighbor 
+ZURI_router(config-router)# neighbor 48.49.0.1 remote-as 48
+ZURI_router(config-router)# exit
+ZURI_router(config)# show ip bgp sum\
+% Unknown command: show ip bgp sum\
+ZURI_router(config)# show ip bgp sum 
+% Unknown command: show ip bgp sum
+ZURI_router(config)# exit
+ZURI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.152.0.1, local AS number 49 vrf-id 0
+BGP table version 66
+RIB entries 78, using 15 KiB of memory
+Peers 8, using 170 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+48.49.0.1       4         48        37        52        0    0    0 00:00:11           24       41
+49.151.0.1      4         49      1176      1197        0    0    0 19:33:55            0       22
+49.153.0.1      4         49      1206      1197        0    0    0 19:33:56            3       22
+49.154.0.1      4         49      1178      1197        0    0    0 19:33:49            1       22
+49.155.0.1      4         49      1176      1197        0    0    0 19:33:49            0       22
+49.156.0.1      4         49      1177      1197        0    0    0 19:33:49            0       22
+49.157.0.1      4         49      1200      1197        0    0    0 19:33:49           15       22
+49.158.0.1      4         49      1177      1197        0    0    0 19:33:50            1       22
+
+Total number of neighbors 8
+ZURI_router# ping 48.49.0.1
+PING 48.49.0.1 (48.49.0.1) 56(84) bytes of data.
+64 bytes from 48.49.0.1: icmp_seq=1 ttl=64 time=2.86 ms
+64 bytes from 48.49.0.1: icmp_seq=2 ttl=64 time=2.18 ms
+64 bytes from 48.49.0.1: icmp_seq=3 ttl=64 time=2.17 ms
+64 bytes from 48.49.0.1: icmp_seq=4 ttl=64 time=2.19 ms
+^C
+--- 48.49.0.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3003ms
+rtt min/avg/max/mdev = 2.175/2.354/2.868/0.300 ms
+ZURI_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ZURI-L2         up      default         
+ZURI-L2.10      down    default         
+ZURI-L2.20      down    default         
+ZURI-L2.30      down    default         
+ext_48_ATLA     up      default         48.49.0.2/24
+lo              up      default         49.152.0.1/24
+measurement_49  up      default         49.0.199.1/24
+port_LOND       up      default         49.0.2.1/24
+port_PARI       up      default         49.0.1.1/24
+ssh             up      default         158.49.11.1/16
+
+ZURI_router# 

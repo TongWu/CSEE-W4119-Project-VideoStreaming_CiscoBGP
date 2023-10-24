@@ -1,0 +1,38 @@
+conf t
+router bgp 49
+# PARI
+neighbor 49.153.0.1 remote-as 49
+neighbor 49.153.0.1 next-hop-self 
+neighbor 49.153.0.1 update-source lo
+# LOND
+neighbor 49.151.0.1 remote-as 49
+neighbor 49.151.0.1 next-hop-self 
+neighbor 49.151.0.1 update-source lo
+# NEWY
+neighbor 49.155.0.1 remote-as 49
+neighbor 49.155.0.1 next-hop-self 
+neighbor 49.155.0.1 update-source lo
+# BOST
+neighbor 49.156.0.1 remote-as 49
+neighbor 49.156.0.1 next-hop-self 
+neighbor 49.156.0.1 update-source lo
+# ATLA
+neighbor 49.157.0.1 remote-as 49
+neighbor 49.157.0.1 next-hop-self 
+neighbor 49.157.0.1 update-source lo
+# MIAM
+neighbor 49.158.0.1 remote-as 49
+neighbor 49.158.0.1 next-hop-self 
+neighbor 49.158.0.1 update-source lo
+# GENE
+neighbor 49.154.0.1 remote-as 49
+neighbor 49.154.0.1 next-hop-self 
+neighbor 49.154.0.1 update-source lo
+# ZURI
+neighbor 49.152.0.1 remote-as 49
+neighbor 49.152.0.1 next-hop-self 
+neighbor 49.152.0.1 update-source lo
+exit
+exit
+show ip bgp sum
+ping 100.101.0.1

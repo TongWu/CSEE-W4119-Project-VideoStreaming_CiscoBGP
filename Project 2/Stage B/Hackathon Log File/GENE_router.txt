@@ -1,0 +1,88 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Tue Nov 29 21:02:28 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh GENE router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+GENE_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+GENE-L2         up      default         
+GENE-L2.10      down    default         
+GENE-L2.20      down    default         
+GENE-L2.30      down    default         
+ext_51_LOND     up      default         
+lo              up      default         49.154.0.1/24
+port_MIAM       up      default         49.0.9.1/24
+port_PARI       up      default         49.0.3.2/24
+ssh             up      default         158.49.13.1/16
+
+GENE_router# conf t
+GENE_router(config)# interface ext_51_LOND
+GENE_router(config-if)# ip address 49.51.1.1/24
+GENE_router(config-if)# exit
+GENE_router(config)# router bgp 49 
+GENE_router(config-router)# neighbor 49.51.1.2 remote-as 51
+GENE_router(config-router)# exit
+GENE_router(config)# exit
+GENE_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.154.0.1, local AS number 49 vrf-id 0
+BGP table version 12
+RIB entries 17, using 3264 bytes of memory
+Peers 8, using 170 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.51.1.2       4         51        13        13        0    0    0 00:00:06            8        9
+49.151.0.1      4         49      1154      1156        0    0    0 19:11:20            0        1
+49.152.0.1      4         49      1152      1153        0    0    0 19:08:25            0        1
+49.153.0.1      4         49      1167      1156        0    0    0 19:11:26            7        1
+49.155.0.1      4         49      1154      1156        0    0    0 19:11:19            0        1
+49.156.0.1      4         49      1155      1156        0    0    0 19:11:19            0        1
+49.157.0.1      4         49      1157      1156        0    0    0 19:11:19            1        1
+49.158.0.1      4         49      1155      1156        0    0    0 19:11:19            1        1
+
+Total number of neighbors 8
+GENE_router# ping 49.51.1.2
+PING 49.51.1.2 (49.51.1.2) 56(84) bytes of data.
+64 bytes from 49.51.1.2: icmp_seq=1 ttl=64 time=2.45 ms
+64 bytes from 49.51.1.2: icmp_seq=2 ttl=64 time=2.11 ms
+64 bytes from 49.51.1.2: icmp_seq=3 ttl=64 time=2.17 ms
+64 bytes from 49.51.1.2: icmp_seq=4 ttl=64 time=2.10 ms
+64 bytes from 49.51.1.2: icmp_seq=5 ttl=64 time=2.19 ms
+^C
+--- 49.51.1.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4004ms
+rtt min/avg/max/mdev = 2.109/2.210/2.457/0.138 ms
+GENE_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+GENE-L2         up      default         
+GENE-L2.10      down    default         
+GENE-L2.20      down    default         
+GENE-L2.30      down    default         
+ext_51_LOND     up      default         49.51.1.1/24
+lo              up      default         49.154.0.1/24
+port_MIAM       up      default         49.0.9.1/24
+port_PARI       up      default         49.0.3.2/24
+ssh             up      default         158.49.13.1/16
+
+GENE_router# 

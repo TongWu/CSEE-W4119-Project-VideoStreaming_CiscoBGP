@@ -1,0 +1,105 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Tue Nov 29 20:21:27 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh PARI router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+PARI_router# conf t
+PARI_router(config)# show interface brief
+% Unknown command: show interface brief
+PARI_router(config)# exit                
+PARI_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_50_PARI     up      default         
+ext_100_LOND    up      default         180.0.49.1/24
+host            up      default         49.103.0.2/24
+lo              up      default         49.153.0.1/24
+matrix_49       up      default         49.0.198.1/24
+port_GENE       up      default         49.0.3.1/24
+port_LOND       up      default         49.0.4.1/24
+port_MIAM       up      default         49.0.6.1/24
+port_NEWY       up      default         49.0.5.1/24
+port_ZURI       up      default         49.0.1.2/24
+ssh             up      default         158.49.12.1/16
+
+PARI_router# conf t 
+PARI_router(config)# interface ext_50_PARI
+PARI_router(config-if)# ip address 50.49.0.2/24
+PARI_router(config-if)# exit
+PARI_router(config)# exit
+PARI_router# conf t
+PARI_router(config)# router bgp 49 
+PARI_router(config-router)# neighbor 50.49.0.1 area 0
+% Unknown command: neighbor 50.49.0.1 area 0
+PARI_router(config-router)# neighbor 50.49.0.1 remote-as 50
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_50_PARI     up      default         50.49.0.2/24
+ext_100_LOND    up      default         180.0.49.1/24
+host            up      default         49.103.0.2/24
+lo              up      default         49.153.0.1/24
+matrix_49       up      default         49.0.198.1/24
+port_GENE       up      default         49.0.3.1/24
+port_LOND       up      default         49.0.4.1/24
+port_MIAM       up      default         49.0.6.1/24
+port_NEWY       up      default         49.0.5.1/24
+port_ZURI       up      default         49.0.1.2/24
+ssh             up      default         158.49.12.1/16
+
+PARI_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 180.0.49.1, local AS number 49 vrf-id 0
+BGP table version 9
+RIB entries 17, using 3264 bytes of memory
+Peers 9, using 192 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49      6802      6814        0    0    0 4d17h20m            0        9
+49.152.0.1      4         49      1138      1148        0    0    0 18:54:47            0        9
+49.154.0.1      4         49      1141      1151        0    0    0 18:57:42            0        9
+49.155.0.1      4         49      6803      6819        0    0    0 4d17h17m            0        9
+49.156.0.1      4         49      6792      6805        0    0    0 4d17h08m            0        9
+49.157.0.1      4         49      6790      6802        0    0    0 4d17h07m            0        9
+49.158.0.1      4         49      6787      6801        0    0    0 4d17h04m            0        9
+50.49.0.1       4         50        12        13        0    0    0 00:00:18            8        9
+180.0.49.2      4        100     14071     14079        0    0    0 01w2d18h            1        9
+
+Total number of neighbors 9
+PARI_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_50_PARI     up      default         50.49.0.2/24
+ext_100_LOND    up      default         180.0.49.1/24
+host            up      default         49.103.0.2/24
+lo              up      default         49.153.0.1/24
+matrix_49       up      default         49.0.198.1/24
+port_GENE       up      default         49.0.3.1/24
+port_LOND       up      default         49.0.4.1/24
+port_MIAM       up      default         49.0.6.1/24
+port_NEWY       up      default         49.0.5.1/24
+port_ZURI       up      default         49.0.1.2/24
+ssh             up      default         158.49.12.1/16
+
+PARI_router# 

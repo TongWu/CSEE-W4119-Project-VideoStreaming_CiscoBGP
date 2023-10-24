@@ -1,0 +1,88 @@
+Building configuration...
+
+Current configuration:
+!
+frr version 7.5
+frr defaults traditional
+hostname PARI_router
+no ipv6 forwarding
+!
+ip route 0.0.0.0/0 49.0.4.2
+!
+interface ext_50_PARI
+ ip address 50.49.0.2/24
+!
+interface ext_100_LOND
+ ip address 180.0.49.1/24
+!
+interface host
+ ip address 49.103.0.2/24
+!
+interface lo
+ ip address 49.153.0.1/24
+!
+interface matrix_49
+ ip address 49.0.198.1/24
+!
+interface port_GENE
+ ip address 49.0.3.1/24
+!
+interface port_LOND
+ ip address 49.0.4.1/24
+!
+interface port_MIAM
+ ip address 49.0.6.1/24
+!
+interface port_NEWY
+ ip address 49.0.5.1/24
+!
+interface port_ZURI
+ ip address 49.0.1.2/24
+!
+router bgp 49
+ no bgp ebgp-requires-policy
+ no bgp network import-check
+ neighbor 49.151.0.1 remote-as 49
+ neighbor 49.151.0.1 update-source lo
+ neighbor 49.152.0.1 remote-as 49
+ neighbor 49.152.0.1 update-source lo
+ neighbor 49.154.0.1 remote-as 49
+ neighbor 49.154.0.1 update-source lo
+ neighbor 49.155.0.1 remote-as 49
+ neighbor 49.155.0.1 update-source lo
+ neighbor 49.156.0.1 remote-as 49
+ neighbor 49.156.0.1 update-source lo
+ neighbor 49.157.0.1 remote-as 49
+ neighbor 49.157.0.1 update-source lo
+ neighbor 49.158.0.1 remote-as 49
+ neighbor 49.158.0.1 update-source lo
+ neighbor 50.49.0.1 remote-as 50
+ neighbor 180.0.49.2 remote-as 100
+ !
+ address-family ipv4 unicast
+  network 49.0.0.0/8
+  neighbor 49.151.0.1 next-hop-self
+  neighbor 49.152.0.1 next-hop-self
+  neighbor 49.154.0.1 next-hop-self
+  neighbor 49.155.0.1 next-hop-self
+  neighbor 49.156.0.1 next-hop-self
+  neighbor 49.157.0.1 next-hop-self
+  neighbor 49.158.0.1 next-hop-self
+  neighbor 50.49.0.1 next-hop-self
+ exit-address-family
+!
+router ospf
+ network 49.0.1.0/24 area 0
+ network 49.0.3.0/24 area 0
+ network 49.0.4.0/24 area 0
+ network 49.0.5.0/24 area 0
+ network 49.0.6.0/24 area 0
+ network 49.0.198.0/24 area 0
+ network 49.0.199.0/24 area 0
+ network 49.103.0.0/24 area 0
+ network 49.153.0.0/24 area 0
+ network 198.0.0.0/24 area 0
+!
+line vty
+!
+end

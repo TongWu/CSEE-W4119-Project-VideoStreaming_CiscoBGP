@@ -1,0 +1,64 @@
+Building configuration...
+
+Current configuration:
+!
+frr version 7.5
+frr defaults traditional
+hostname GENE_router
+no ipv6 forwarding
+!
+interface ext_51_LOND
+ ip address 49.51.1.1/24
+!
+interface lo
+ ip address 49.154.0.1/24
+!
+interface port_MIAM
+ ip address 49.0.9.1/24
+ ip ospf cost 80
+!
+interface port_PARI
+ ip address 49.0.3.2/24
+ ip ospf cost 10
+!
+router bgp 49
+ no bgp ebgp-requires-policy
+ no bgp network import-check
+ neighbor 49.51.1.2 remote-as 51
+ neighbor 49.151.0.1 remote-as 49
+ neighbor 49.151.0.1 update-source lo
+ neighbor 49.152.0.1 remote-as 49
+ neighbor 49.152.0.1 update-source lo
+ neighbor 49.153.0.1 remote-as 49
+ neighbor 49.153.0.1 update-source lo
+ neighbor 49.155.0.1 remote-as 49
+ neighbor 49.155.0.1 update-source lo
+ neighbor 49.156.0.1 remote-as 49
+ neighbor 49.156.0.1 update-source lo
+ neighbor 49.157.0.1 remote-as 49
+ neighbor 49.157.0.1 update-source lo
+ neighbor 49.158.0.1 remote-as 49
+ neighbor 49.158.0.1 update-source lo
+ !
+ address-family ipv4 unicast
+  neighbor 49.51.1.2 next-hop-self
+  neighbor 49.151.0.1 next-hop-self
+  neighbor 49.152.0.1 next-hop-self
+  neighbor 49.153.0.1 next-hop-self
+  neighbor 49.155.0.1 next-hop-self
+  neighbor 49.156.0.1 next-hop-self
+  neighbor 49.157.0.1 next-hop-self
+  neighbor 49.158.0.1 next-hop-self
+ exit-address-family
+!
+router ospf
+ network 49.0.3.0/24 area 0
+ network 49.0.9.0/24 area 0
+ network 49.0.199.0/24 area 0
+ network 49.104.0.0/24 area 0
+ network 49.154.0.0/24 area 0
+ network 198.0.0.0/24 area 0
+!
+line vty
+!
+end

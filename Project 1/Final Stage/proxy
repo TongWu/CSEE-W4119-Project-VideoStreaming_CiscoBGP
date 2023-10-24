@@ -1,0 +1,202 @@
+#!/usr/bin/python3.10
+import sys, threading, select, time, re
+import numpy as np
+from socket import *
+
+thread_lock = threading.Lock()
+
+
+def log(l_f, t, d, tput, avg_tput, b, s_ip, c):
+    """Write log to file"""
+    with open(l_f, 'a') as f:
+        f.write(str(t) + ' ' + str(d) + ' ' + str(tput) + ' ' + str(avg_tput) + ' ' + str(b) + ' ' + str(s_ip) + ' ' +
+                str(c) + "\n")
+    print(str(t) + ' ' + str(d) + ' ' + str(tput) + ' ' + str(avg_tput) + ' ' + str(b) + ' ' + str(s_ip) + ' ' + str(c))
+
+
+def bitrate_client_msg(t_meas_current, bitrate_pro):
+    """Match bitrate"""
+    bitrate_difference = [0, 0, 0, 0]
+    k = 0
+    # print(t_meas_current)
+    while k < 4:
+        # "we say a connection can support a bitrate if the average throughput is at least 1.5 times the bitrate"
+        bitrate_difference[k] = abs(t_meas_current / 1.5 - bitrate_pro[k])
+        k += 1
+    bitrate_matched = bitrate_pro[bitrate_difference.index(min(bitrate_difference))]
+    return bitrate_matched
+
+
+def chunk_client_msg(clientMessage):
+    """Find chunk file path"""
+    return clientMessage[clientMessage.find(b'GET ') + 4: clientMessage.find(b' HTTP/1.1')]
+
+
+def mod_client_msg(clientMessage, bitrate_matched):
+    """Change bitrate part of client message to calculated bitrate level"""
+    pointer = clientMessage.decode().find('GET /bunny_')
+    if pointer != -1:
+        bitrate_payload = clientMessage.decode()[pointer + 11:pointer + 19]
+        # Find original bitrate #
+        bitrate_unchanged = re.findall(r"\d+", bitrate_payload)[0]
+
+        # Replace client message #
+        clientMessage_mod = clientMessage.decode().replace(bitrate_unchanged, str(bitrate_matched)).encode()
+
+        # Randomly change bitrate (test purpose)#
+        # lucky_num = int(random.uniform(0, 3))
+        # clientMessage_mod = clientMessage.decode().replace(bitrate_unchanged, str(bitrate_pro[lucky_num])).encode()
+        # print(clientMessage_mod.decode("utf-8"))
+        return clientMessage_mod
+    else:
+        # If no bitrate find in message, pass #
+        return clientMessage
+
+
+def fetch_xml(serverMessage, bitrate_pro):
+    """Read xml format file without using xml package"""
+    i = 0
+    next_payload = serverMessage
+    while i < 4:
+        # Iterate reading next bandwidth value #
+        bitrate_pro[i] = (int(re.findall(r"\d+", next_payload[next_payload.find(b'bandwidth="') + 11:
+                                                              next_payload.find(
+                                                                  b'bandwidth="') + 19].decode())[0]))
+        next_payload = next_payload[next_payload.find(b'bandwidth="') + 19:]
+        i += 1
+    # print(bitrate_pro)
+    return bitrate_pro
+
+
+def proxy(logfile, alp, client_connectionSocket, proxy2serverSocket, serverIP):
+    """Main proxy function, forward message between client and server, modify message if is necessary"""
+    try:
+        '''Parameter Initiation'''
+        t_meas_current = 0.00
+        bitrate_pro = [0, 0, 0, 0]
+        bitrate_matched = 0
+        last_clientMsg = b''
+        needFetch = True
+
+        while True:
+            ''' Receive client message '''
+            clientMessage = client_connectionSocket.recv(4096)
+            # Start timer #
+            start_time = time.time()
+
+            '''Match bitrate'''
+            bitrate_matched = bitrate_client_msg(t_meas_current, bitrate_pro)
+            if bitrate_matched == 0:
+                needLog = False
+            else:
+                needLog = True
+
+            '''Modify client message'''
+            clientMessage = mod_client_msg(clientMessage, bitrate_matched)
+
+            '''Get chunk name'''
+            chunk_name = chunk_client_msg(clientMessage)
+            # print(chunk_name)
+
+            '''Send modified message to server'''
+            proxy2serverSocket.sendall(clientMessage)
+
+            '''Split first message chunk to header and content'''
+            header_payload = proxy2serverSocket.recv(8192)
+            content_len_payload = header_payload[header_payload.find(b'Content-Length: ') + 16: header_payload.find(
+                b'Content-Length: ') + 22].decode("utf-8")
+            content_len = int(re.findall(r"\d+", content_len_payload)[0])
+            # Split header by EOF \r\n\r\n #
+            header_message = header_payload[0:header_payload.find(b'\r\n\r\n') + 4]
+            content_message = header_payload[header_payload.find(b'\r\n\r\n') + 4:]
+            total_length = int(len(header_message)) + int(content_len)
+
+            '''Receive remaining HTTP response content'''
+            while len(content_message) < content_len:
+                packet = proxy2serverSocket.recv(2048)
+                if not packet:
+                    break
+                content_message += packet
+            finish_time = time.time()
+            serverMessage = header_message + content_message
+
+            '''Fetch XML file from server message'''
+            if needFetch:
+                pointer = serverMessage.find(b'<?xml version="1.0" encoding="UTF-8"?>')
+                if pointer >= 0:
+                    bitrate_pro = fetch_xml(serverMessage, bitrate_pro)
+                    needFetch = False
+                    pointer = clientMessage.decode().find('/BigBuckBunny_6s.mpd')
+                    if pointer >= 0:
+                        clientMessage = clientMessage.decode().replace('/BigBuckBunny_6s.mpd',
+                                                                       'BigBuckBunny_6s_nolist.mpd').encode()
+                    else:
+                        pass
+                else:
+                    pass
+            else:
+                pass
+
+            '''Send server message to client'''
+            client_connectionSocket.sendall(serverMessage)
+
+            '''Calculate estimated bitrate'''
+            time_duration = finish_time - start_time
+            # print(time_duration)
+            throughput = total_length / time_duration
+            t_meas_current = float(alp) * float(throughput) + (1 - float(alp)) * t_meas_current
+
+            '''Log'''
+            if needLog:
+                log(logfile, time.time(), time_duration, throughput, t_meas_current, bitrate_matched/1000, serverIP, chunk_name)
+            else:
+                pass
+
+            '''Clear all variables'''
+            serverMessage = b''
+            clientMessage = b''
+            content_len = 0
+            content_len_payload = ''
+            header_payload = b''
+            header_message = b''
+            content_message = b''
+            total_length = 0
+            packet = b''
+
+        '''Close sockets'''
+        proxy2serverSocket.close()
+        client_connectionSocket.close()
+    except KeyboardInterrupt:
+        proxy2serverSocket.close()
+        client_connectionSocket.close()
+        exit()
+
+
+if __name__ == '__main__':
+    logfile = sys.argv[1]
+    alpha = sys.argv[2]
+    listenPort = sys.argv[3]
+    fakeIP = sys.argv[4]
+    serverIP = sys.argv[5]
+
+    '''Start proxying'''
+    serverPort = 8080
+    proxy2serverSocket = socket(AF_INET, SOCK_STREAM)
+    proxy2serverSocket.bind((fakeIP, 0))
+    proxy2serverSocket.connect((serverIP, serverPort))
+
+    '''Create socket from client to proxy'''
+    client2proxySocket = socket(AF_INET, SOCK_STREAM)
+    client2proxySocket.bind(('', int(listenPort)))
+    client2proxySocket.listen(5)
+
+    while True:
+        client_connectionSocket, addr = client2proxySocket.accept()
+        thread_lock.acquire()
+        t = threading.Thread(target=proxy, args=(logfile, alpha, client_connectionSocket, proxy2serverSocket, serverIP))
+        t.start()
+        t.join()
+
+    '''Close sockets'''
+    proxy2serverSocket.close()
+    client_connectionSocket.close()

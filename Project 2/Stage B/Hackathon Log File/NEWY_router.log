@@ -1,0 +1,39 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Tue Nov 29 21:05:18 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh NEWY router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+NEWY_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_49_PARI     down    default         
+ext_100_LOND    down    default         
+host            up      default         49.105.0.2/24
+ixp_89          up      default         
+lo              up      default         49.155.0.1/24
+port_ATLA       up      default         49.0.11.1/24
+port_BOST       up      default         49.0.10.1/24
+port_LOND       up      default         49.0.8.2/24
+port_MIAM       up      default         49.0.12.1/24
+port_PARI       up      default         49.0.5.2/24
+ssh             up      default         158.49.14.1/16
+
+NEWY_router# 

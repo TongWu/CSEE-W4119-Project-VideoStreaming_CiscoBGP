@@ -1,0 +1,400 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 22:47:54 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh NEWY router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+NEWY_router# conf t
+NEWY_router(config)# router bgp 49
+NEWY_router(config-router)# no bgp ebgp-requires-policy
+NEWY_router(config-router)# no bgp network import-check
+NEWY_router(config-router)# neighbor 49.151.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.153.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.156.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.157.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.158.0.1 remote-as 49
+NEWY_router(config-router)# exit
+NEWY_router(config)# exit
+NEWY_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.155.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         0         0        0    0    0    never       Active        0
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+49.156.0.1      4         49         0         0        0    0    0    never       Active        0
+49.157.0.1      4         49         0         0        0    0    0    never       Active        0
+49.158.0.1      4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 5
+NEWY_router# conf t
+NEWY_router(config)# no router bgp 49
+NEWY_router(config)# exit
+NEWY_router# conf t
+NEWY_router(config)# router bgp 49
+NEWY_router(config-router)# no bgp ebgp-requires-policy
+NEWY_router(config-router)# no bgp network import-check
+NEWY_router(config-router)# neighbor 49.0.5.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.8.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.10.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.11.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.12.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.5.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.8.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.10.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.11.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.12.2 next-hop-self
+NEWY_router(config-router)# exit
+NEWY_router(config)# exit
+NEWY_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.155.0.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.5.1        4         49         5         3        0    0    0 00:00:12            2        0
+49.0.8.1        4         49         3         3        0    0    0 00:00:11            0        0
+49.0.10.2       4         49         0         0        0    0    0    never       Active        0
+49.0.11.2       4         49         0         0        0    0    0    never       Active        0
+49.0.12.2       4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 5
+NEWY_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 49.0.0.0/8 [200/0] via 49.0.5.1, port_PARI, weight 1, 00:00:29
+B>* 100.0.0.0/8 [200/0] via 49.0.5.1, port_PARI, weight 1, 00:00:29
+NEWY_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=62 time=4.67 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=62 time=4.43 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=62 time=4.33 ms
+^C
+--- 100.101.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 4.339/4.483/4.676/0.151 ms
+NEWY_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.155.0.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.5.1        4         49         9         7        0    0    0 00:04:34            2        0
+49.0.8.1        4         49         7         7        0    0    0 00:04:33            0        0
+49.0.10.2       4         49         5         5        0    0    0 00:02:27            0        0
+49.0.11.2       4         49         0         0        0    0    0    never       Active        0
+49.0.12.2       4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 5
+NEWY_router# show ip bgp
+BGP table version is 2, local router ID is 49.155.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.0.5.1                 0    100      0 i
+*>i100.0.0.0/8      49.0.5.1                 0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+NEWY_router# show ip oute bgp
+% Unknown command: show ip oute bgp
+NEWY_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 49.0.0.0/8 [200/0] via 49.0.5.1, port_PARI, weight 1, 00:05:05
+B>* 100.0.0.0/8 [200/0] via 49.0.5.1, port_PARI, weight 1, 00:05:05
+NEWY_router# ping 100.101.0.1 -c 10\
+% Unknown command: ping 100.101.0.1 -c 10\
+NEWY_router# ping 100.101.0.1 -c 10 
+% Unknown command: ping 100.101.0.1 -c 10
+NEWY_router# ping 100.101.0.1      
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=62 time=4.68 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=62 time=4.26 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=62 time=4.28 ms
+64 bytes from 100.101.0.1: icmp_seq=4 ttl=62 time=4.29 ms
+^C
+--- 100.101.0.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 4.264/4.381/4.684/0.187 ms
+NEWY_router# traceroute 100.101.0.1
+traceroute to 100.101.0.1 (100.101.0.1), 64 hops max
+  1   49.0.5.1  2.132ms  2.110ms  2.105ms 
+  2   180.0.49.2  4.709ms  4.439ms  4.313ms 
+  3   100.101.0.1  4.607ms  4.374ms  4.269ms 
+NEWY_router# conf t
+NEWY_router(config)# router bgp 49
+NEWY_router(config-router)# neighbor 49.0.1.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.1.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.2.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.2.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.3.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.3.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.4.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.4.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.5.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.5.2 remote-as 49
+% Can not configure the local system as neighbor
+NEWY_router(config-router)# neighbor 49.0.6.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.6.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.7.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.7.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.8.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.8.2 remote-as 49
+% Can not configure the local system as neighbor
+NEWY_router(config-router)# neighbor 49.0.9.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.9.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.10.1 remote-as 49
+% Can not configure the local system as neighbor
+NEWY_router(config-router)# neighbor 49.0.10.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.11.1 remote-as 49
+% Can not configure the local system as neighbor
+NEWY_router(config-router)# neighbor 49.0.11.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.12.1 remote-as 49
+% Can not configure the local system as neighbor
+NEWY_router(config-router)# neighbor 49.0.12.2 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.13.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.0.13.2 remote-as 49
+NEWY_router(config-router)# 
+NEWY_router(config-router)# neighbor 49.0.1.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.1.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.2.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.2.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.3.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.3.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.4.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.4.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.5.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.5.2 next-hop-self
+% Specify remote-as or peer-group commands first
+NEWY_router(config-router)# neighbor 49.0.6.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.6.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.7.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.7.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.8.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.8.2 next-hop-self
+% Specify remote-as or peer-group commands first
+NEWY_router(config-router)# neighbor 49.0.9.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.9.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.10.1 next-hop-self
+% Specify remote-as or peer-group commands first
+NEWY_router(config-router)# neighbor 49.0.10.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.11.1 next-hop-self
+% Specify remote-as or peer-group commands first
+NEWY_router(config-router)# neighbor 49.0.11.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.12.1 next-hop-self
+% Specify remote-as or peer-group commands first
+NEWY_router(config-router)# neighbor 49.0.12.2 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.13.1 next-hop-self
+NEWY_router(config-router)# neighbor 49.0.13.2 next-hop-self
+NEWY_router(config-router)# exit
+NEWY_router(config)# exit
+NEWY_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.155.0.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 21, using 447 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.1.2        4         49        15         7        0    0    0    never         Idle        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49        15         8        0    0    0    never         Idle        0
+49.0.3.1        4         49        15         8        0    0    0    never         Idle        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49         5         3        0    0    0 00:00:53            2        0
+49.0.4.2        4         49        18        11        0    0    0 00:00:07            0        0
+49.0.5.1        4         49        40        38        0    0    0 00:35:09            2        0
+49.0.6.1        4         49         5         3        0    0    0 00:00:48            2        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.0.7.1        4         49         3         3        0    0    0 00:00:46            0        0
+49.0.7.2        4         49         3         3        0    0    0 00:00:45            0        0
+49.0.8.1        4         49        38        38        0    0    0 00:35:08            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49         0         0        0    0    0    never       Active        0
+49.0.10.2       4         49        36        36        0    0    0 00:33:02            0        0
+49.0.11.2       4         49         0         0        0    0    0    never       Active        0
+49.0.12.2       4         49         0         0        0    0    0    never       Active        0
+49.0.13.1       4         49         0         0        0    0    0    never       Active        0
+49.0.13.2       4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 21
+NEWY_router# conf t
+NEWY_router(config)# router bgp 49
+NEWY_router(config-router)# no neighbor 49.0.5.1
+NEWY_router(config-router)# neighbor 49.153.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.153.0.1 next-hop-self 
+NEWY_router(config-router)# neighbor 49.153.0.1 update-source lo
+NEWY_router(config-router)# show ip bgp sum
+% Unknown command: show ip bgp sum
+NEWY_router(config-router)# exit
+NEWY_router(config)# exity
+% Unknown command: exity
+NEWY_router(config)# exit 
+NEWY_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=62 time=4.74 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=62 time=4.25 ms
+^C
+--- 100.101.0.1 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 4.258/4.500/4.742/0.242 ms
+NEWY_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.155.0.1, local AS number 49 vrf-id 0
+BGP table version 14
+RIB entries 3, using 576 bytes of memory
+Peers 21, using 447 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never      Connect        0
+49.0.1.2        4         49       275       164        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.2.2        4         49       186       116        0    0    0    never         Idle        0
+49.0.3.1        4         49       332       232        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49        72        70        0    0    0 01:07:35            2        0
+49.0.4.2        4         49        84        77        0    0    0 01:06:49            0        0
+49.0.6.1        4         49        72        70        0    0    0 01:07:30            2        0
+49.0.6.2        4         49        60        60        0    0    0 00:57:29            0        0
+49.0.7.1        4         49        70        70        0    0    0 01:07:28            0        0
+49.0.7.2        4         49        70        70        0    0    0 01:07:27            0        0
+49.0.8.1        4         49       104       104        0    0    0 01:41:50            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       246       157        0    0    0    never         Idle        0
+49.0.10.2       4         49       102       102        0    0    0 01:39:44            0        0
+49.0.11.2       4         49        68        69        0    0    0 01:05:41            0        0
+49.0.12.2       4         49        61        61        0    0    0 00:58:12            0        0
+49.0.13.1       4         49        68        68        0    0    0 01:05:15            0        0
+49.0.13.2       4         49       121        64        0    0    0    never         Idle        0
+49.153.0.1      4         49         5         4        0    0    0 00:00:30            2        0
+
+Total number of neighbors 21
+NEWY_router# conf t
+NEWY_router(config)# router bgp 49
+NEWY_router(config-router)# no neighbor 49.0.1.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.1.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.2.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.2.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.3.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.3.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.4.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.4.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.5.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.5.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.6.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.6.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.7.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.7.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.8.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.8.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.9.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.9.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.10.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.10.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.11.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.11.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.12.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.12.2 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.13.1 remote-as 49
+NEWY_router(config-router)# no neighbor 49.0.13.2 remote-as 49
+NEWY_router(config-router)# exit
+NEWY_router(config)# exit
+NEWY_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.155.0.1, local AS number 49 vrf-id 0
+BGP table version 14
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         8         7        0    0    0 00:03:29            2        0
+
+Total number of neighbors 1
+NEWY_router# conf t
+NEWY_router(config)# router bgp 49
+NEWY_router(config-router)# neighbor 49.153.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.153.0.1 next-hop-self 
+NEWY_router(config-router)# neighbor 49.153.0.1 update-source lo
+NEWY_router(config-router)# neighbor 49.151.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.151.0.1 next-hop-self 
+NEWY_router(config-router)# neighbor 49.151.0.1 update-source lo
+NEWY_router(config-router)# neighbor 49.156.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.156.0.1 next-hop-self 
+NEWY_router(config-router)# neighbor 49.156.0.1 update-source lo
+NEWY_router(config-router)# neighbor 49.157.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.157.0.1 next-hop-self 
+NEWY_router(config-router)# neighbor 49.157.0.1 update-source lo
+NEWY_router(config-router)# neighbor 49.158.0.1 remote-as 49
+NEWY_router(config-router)# neighbor 49.158.0.1 next-hop-self 
+NEWY_router(config-router)# neighbor 49.158.0.1 update-source lo
+NEWY_router(config-router)# exit
+NEWY_router(config)# exit
+NEWY_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.155.0.1, local AS number 49 vrf-id 0
+BGP table version 14
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.151.0.1      4         49         3         4        0    0    0 00:00:12            0        0
+49.153.0.1      4         49        13        12        0    0    0 00:08:22            2        0
+49.156.0.1      4         49         0         2        0    0    0    never       Active        0
+49.157.0.1      4         49         0         2        0    0    0    never       Active        0
+49.158.0.1      4         49         0         2        0    0    0    never       Active        0
+
+Total number of neighbors 5
+NEWY_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=62 time=4.68 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=62 time=4.33 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=62 time=4.33 ms
+^C
+--- 100.101.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 4.333/4.452/4.686/0.182 ms
+NEWY_router# 

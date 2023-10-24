@@ -1,0 +1,166 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 02:49:08 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh PARI router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+PARI_router# show ip ospf neighbor
+
+Neighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL
+198.0.0.49        1 Full/DR           35.490s 49.0.4.2        port_LOND:49.0.4.1                   0     0     0
+
+PARI_router# show ip route ospf
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+O   49.0.1.0/24 [110/10] is directly connected, port_ZURI, weight 1, 00:16:38
+O>* 49.0.2.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 00:17:52
+O   49.0.3.0/24 [110/10] is directly connected, port_GENE, weight 1, 00:16:41
+O   49.0.4.0/24 [110/10] is directly connected, port_LOND, weight 1, 01:25:39
+O   49.0.5.0/24 [110/10] is directly connected, port_NEWY, weight 1, 00:16:39
+O   49.0.6.0/24 [110/10] is directly connected, port_MIAM, weight 1, 00:16:40
+O>* 49.0.7.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 00:17:54
+O>* 49.0.8.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 00:17:53
+O   49.0.198.0/24 [110/10] is directly connected, matrix_49, weight 1, 01w4d10h
+O>* 49.101.0.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 00:14:04
+O   49.103.0.0/24 [110/10] is directly connected, host, weight 1, 00:14:46
+O>* 49.151.0.1/32 [110/10] via 49.0.4.2, port_LOND, weight 1, 00:14:03
+O>* 49.153.0.1/32 [110/0] is directly connected, lo, weight 1, 00:14:45
+O>* 198.0.0.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 01:25:28
+PARI_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_50_PARI     up      default         
+ext_100_LOND    up      default         180.0.49.1/24
+host            up      default         49.103.0.2/24
+lo              up      default         49.153.0.1/24
+matrix_49       up      default         49.0.198.1/24
+port_GENE       up      default         49.0.3.1/24
+port_LOND       up      default         49.0.4.1/24
+port_MIAM       up      default         49.0.6.1/24
+port_NEWY       up      default         49.0.5.1/24
+port_ZURI       up      default         49.0.1.2/24
+ssh             up      default         158.49.12.1/16
+
+PARI_router# conf t
+PARI_router(config)# router ospf
+PARI_router(config-router)# network 49.153.0.1/24 area 0
+PARI_router(config-router)# network 49.103.0.2/24 area 0
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip ospf neighbor
+
+Neighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL
+198.0.0.49        1 Full/DR           35.386s 49.0.4.2        port_LOND:49.0.4.1                   0     0     0
+
+PARI_router# conf t
+PARI_router(config)# router ospf
+PARI_router(config-router)# no network 49.153.0.1/24 area 0
+PARI_router(config-router)# no network 49.103.0.2/24 area 0
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# conf t
+PARI_router(config)# router ospf
+PARI_router(config-router)# no network 198.0.0.0/24 area 0
+PARI_router(config-router)# no network 49.153.0.0/24 area 0
+Can't find specified network area configuration.
+PARI_router(config-router)# no network 49.103.0.0/24 area 0
+Can't find specified network area configuration.
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# ping 49.101.0.2
+connect: Network is unreachable
+PARI_router# ping 49.101.0.2
+connect: Network is unreachable
+PARI_router# ping 49.103.0.1
+PING 49.103.0.1 (49.103.0.1) 56(84) bytes of data.
+64 bytes from 49.103.0.1: icmp_seq=1 ttl=64 time=0.409 ms
+64 bytes from 49.103.0.1: icmp_seq=2 ttl=64 time=0.044 ms
+64 bytes from 49.103.0.1: icmp_seq=3 ttl=64 time=0.060 ms
+^C
+--- 49.103.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2028ms
+rtt min/avg/max/mdev = 0.044/0.171/0.409/0.168 ms
+PARI_router# ping 49.0.4.2
+PING 49.0.4.2 (49.0.4.2) 56(84) bytes of data.
+64 bytes from 49.0.4.2: icmp_seq=1 ttl=64 time=0.123 ms
+64 bytes from 49.0.4.2: icmp_seq=2 ttl=64 time=0.155 ms
+64 bytes from 49.0.4.2: icmp_seq=3 ttl=64 time=0.213 ms
+64 bytes from 49.0.4.2: icmp_seq=4 ttl=64 time=0.180 ms
+64 bytes from 49.0.4.2: icmp_seq=5 ttl=64 time=0.182 ms
+^C
+--- 49.0.4.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4102ms
+rtt min/avg/max/mdev = 0.123/0.170/0.213/0.033 ms
+PARI_router# ping 49.0.4.1
+PING 49.0.4.1 (49.0.4.1) 56(84) bytes of data.
+64 bytes from 49.0.4.1: icmp_seq=1 ttl=64 time=0.026 ms
+64 bytes from 49.0.4.1: icmp_seq=2 ttl=64 time=0.078 ms
+64 bytes from 49.0.4.1: icmp_seq=3 ttl=64 time=0.051 ms
+64 bytes from 49.0.4.1: icmp_seq=4 ttl=64 time=0.053 ms
+^C
+--- 49.0.4.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3052ms
+rtt min/avg/max/mdev = 0.026/0.052/0.078/0.018 ms
+PARI_router# conf t
+PARI_router(config)# router ospf
+PARI_router(config-router)# network 198.0.0.0/24 area 0
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip route ospf
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+O   49.0.1.0/24 [110/10] is directly connected, port_ZURI, weight 1, 01:26:34
+O>* 49.0.2.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 01:27:48
+O   49.0.3.0/24 [110/10] is directly connected, port_GENE, weight 1, 01:26:37
+O   49.0.4.0/24 [110/10] is directly connected, port_LOND, weight 1, 02:35:35
+O   49.0.5.0/24 [110/10] is directly connected, port_NEWY, weight 1, 01:26:35
+O   49.0.6.0/24 [110/10] is directly connected, port_MIAM, weight 1, 01:26:36
+O>* 49.0.7.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 01:27:50
+O>* 49.0.8.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 01:27:49
+O   49.0.198.0/24 [110/10] is directly connected, matrix_49, weight 1, 01w4d11h
+O>* 198.0.0.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 00:05:23
+PARI_router# conf t
+PARI_router(config)# router ospf
+PARI_router(config-router)# network 49.103.0.2/24 area 0
+PARI_router(config-router)# network 49.103.0.1/24 area 0
+PARI_router(config-router)# network 49.153.0.1/24 area 0
+PARI_router(config-router)# network 49.153.0.2/24 area 0
+PARI_router(config-router)# exit
+PARI_router(config)# exit
+PARI_router# show ip ospf neighbor
+
+Neighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL
+198.0.0.49        1 Full/DR           35.153s 49.0.4.2        port_LOND:49.0.4.1                   0     0     0
+
+PARI_router# show ip ospf neighbor
+
+Neighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL
+198.0.0.49        1 Full/DR           37.564s 49.0.4.2        port_LOND:49.0.4.1                   0     0     0
+49.155.0.1        1 Full/Backup       36.798s 49.0.5.2        port_NEWY:49.0.5.1                   0     0     0
+
+PARI_router# 

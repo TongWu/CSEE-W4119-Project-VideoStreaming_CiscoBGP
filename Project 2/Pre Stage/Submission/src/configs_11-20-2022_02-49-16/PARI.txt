@@ -1,0 +1,30 @@
+Building configuration...
+
+Current configuration:
+!
+frr version 7.5
+frr defaults traditional
+hostname PARI_router
+no ipv6 forwarding
+!
+interface ext_100_LOND
+ ip address 180.0.49.1/24
+!
+interface matrix_49
+ ip address 49.0.198.1/24
+!
+router bgp 49
+ no bgp ebgp-requires-policy
+ no bgp network import-check
+ neighbor 180.0.49.2 remote-as 100
+ !
+ address-family ipv4 unicast
+  network 49.0.0.0/8
+ exit-address-family
+!
+router ospf
+ network 49.0.198.0/24 area 0
+!
+line vty
+!
+end

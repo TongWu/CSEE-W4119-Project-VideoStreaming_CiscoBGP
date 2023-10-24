@@ -1,0 +1,174 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Tue Nov 29 19:55:53 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh BOST router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+BOST_router# conf
+BOST_router(config)# conf t
+% Unknown command: conf t
+BOST_router(config)# 4
+% Unknown command: 4
+BOST_router(config)# interface ext_48_
+  IFNAME  Interface's name
+BOST_router(config)# interface ext_48_BOST
+BOST_router(config-if)# exit
+BOST_router(config)# exit
+BOST_router# show interface
+Interface ext_47_MIAM is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:19:20.41
+  Link downs:     1    last: 2022/11/12 11:19:20.41
+  vrf: default
+  index 8370 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: f6:df:69:7d:b9:f1
+  Interface Type VETH
+  Interface Slave Type None
+Interface ext_48_BOST is down
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  pseudo interface
+Interface host is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 05:57:52.65
+  Link downs:     1    last: 2022/11/12 05:57:52.65
+  vrf: default
+  index 1024 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: f6:2f:9c:8d:d2:65
+  inet 49.106.0.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface lo is up, line protocol is up
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  index 1 metric 0 mtu 65536 speed 0 
+  flags: <UP,LOOPBACK,RUNNING>
+  Type: Loopback
+  inet 49.156.0.1/24
+  Interface Type Other
+  Interface Slave Type None
+Interface port_LOND is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:41:07.47
+  Link downs:     1    last: 2022/11/12 09:41:07.47
+  vrf: default
+  index 6174 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: ee:c6:a9:e0:12:79
+  inet 49.0.7.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_NEWY is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:41:55.71
+  Link downs:     1    last: 2022/11/12 09:41:55.70
+  vrf: default
+  index 6186 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 56:ad:6e:50:41:0b
+  inet 49.0.10.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ssh is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:50:51.75
+  Link downs:     1    last: 2022/11/12 11:50:51.75
+  vrf: default
+  index 11548 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: ca:55:9b:53:59:de
+  inet 158.49.15.1/16
+  Interface Type VETH
+  Interface Slave Type None
+BOST_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_47_MIAM     up      default         
+ext_48_BOST     down    default         
+host            up      default         49.106.0.2/24
+lo              up      default         49.156.0.1/24
+port_LOND       up      default         49.0.7.2/24
+port_NEWY       up      default         49.0.10.2/24
+ssh             up      default         158.49.15.1/16
+
+BOST_router# conf t
+BOST_router(config)# interface ext_48_BOST
+BOST_router(config-if)# ip address 48.49.0.2/24
+BOST_router(config-if)# exit
+BOST_router(config)# exiy
+% Unknown command: exiy
+BOST_router(config)# exit
+BOST_router# show interface sum
+% Can't find interface sum
+BOST_router# show interface br 
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_47_MIAM     up      default         
+ext_48_BOST     down    default         
+host            up      default         49.106.0.2/24
+lo              up      default         49.156.0.1/24
+port_LOND       up      default         49.0.7.2/24
+port_NEWY       up      default         49.0.10.2/24
+ssh             up      default         158.49.15.1/16
+
+BOST_router# conf t
+BOST_router(config)# router bgp 49
+BOST_router(config-router)# neighbor 48.49.0.1 remote-as 48
+BOST_router(config-router)# exit
+BOST_router(config)# show ip bgp sum
+% Unknown command: show ip bgp sum
+BOST_router(config)# exit
+BOST_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.156.0.1, local AS number 49 vrf-id 0
+BGP table version 38
+RIB entries 52, using 9984 bytes of memory
+Peers 8, using 170 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+48.49.0.1       4         48         0         0        0    0    0    never       Active        0
+49.151.0.1      4         49      6820      6822        0    0    0 4d17h37m            0        0
+49.152.0.1      4         49      1167      1167        0    0    0 19:23:32            0        0
+49.153.0.1      4         49      6849      6822        0    0    0 4d17h37m           25        0
+49.154.0.1      4         49      1171      1170        0    0    0 19:26:26            1        0
+49.155.0.1      4         49      6820      6822        0    0    0 4d17h37m            0        0
+49.157.0.1      4         49      6822      6822        0    0    0 4d17h36m            1        0
+49.158.0.1      4         49      6817      6820        0    0    0 4d17h33m            1        0
+
+Total number of neighbors 8
+BOST_router# conf t
+BOST_router(config)# no interface ext_48_BOST
+BOST_router(config)# exit
+BOST_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_47_MIAM     up      default         
+host            up      default         49.106.0.2/24
+lo              up      default         49.156.0.1/24
+port_LOND       up      default         49.0.7.2/24
+port_NEWY       up      default         49.0.10.2/24
+ssh             up      default         158.49.15.1/16
+
+BOST_router# 

@@ -1,0 +1,151 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 04:23:08 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh MIAM host
+Linux MIAM_host 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Nov 24 02:14:37 2022 from 158.49.0.2
+root@MIAM_host:~# ip route add default via 49.108.0.2
+root@MIAM_host:~# ping 49.106.0.2
+PING 49.106.0.2 (49.106.0.2) 56(84) bytes of data.
+64 bytes from 49.106.0.2: icmp_seq=1 ttl=62 time=0.588 ms
+64 bytes from 49.106.0.2: icmp_seq=2 ttl=62 time=0.223 ms
+64 bytes from 49.106.0.2: icmp_seq=3 ttl=62 time=0.237 ms
+64 bytes from 49.106.0.2: icmp_seq=4 ttl=62 time=0.422 ms
+64 bytes from 49.106.0.2: icmp_seq=5 ttl=62 time=0.260 ms
+64 bytes from 49.106.0.2: icmp_seq=6 ttl=62 time=0.844 ms
+64 bytes from 49.106.0.2: icmp_seq=7 ttl=62 time=0.303 ms
+64 bytes from 49.106.0.2: icmp_seq=8 ttl=62 time=0.215 ms
+64 bytes from 49.106.0.2: icmp_seq=9 ttl=62 time=0.227 ms
+^C
+--- 49.106.0.2 ping statistics ---
+9 packets transmitted, 9 received, 0% packet loss, time 8148ms
+rtt min/avg/max/mdev = 0.215/0.368/0.844/0.205 ms
+root@MIAM_host:~# ping 49.106.0.1
+PING 49.106.0.1 (49.106.0.1) 56(84) bytes of data.
+64 bytes from 49.106.0.1: icmp_seq=1 ttl=61 time=0.597 ms
+64 bytes from 49.106.0.1: icmp_seq=2 ttl=61 time=0.262 ms
+64 bytes from 49.106.0.1: icmp_seq=3 ttl=61 time=0.242 ms
+64 bytes from 49.106.0.1: icmp_seq=4 ttl=61 time=0.289 ms
+^C
+--- 49.106.0.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3061ms
+rtt min/avg/max/mdev = 0.242/0.347/0.597/0.146 ms
+root@MIAM_host:~# ping 49.101.0.1 -c 10
+PING 49.101.0.1 (49.101.0.1) 56(84) bytes of data.
+64 bytes from 49.101.0.1: icmp_seq=1 ttl=61 time=0.777 ms
+64 bytes from 49.101.0.1: icmp_seq=2 ttl=61 time=0.497 ms
+64 bytes from 49.101.0.1: icmp_seq=3 ttl=61 time=0.608 ms
+64 bytes from 49.101.0.1: icmp_seq=4 ttl=61 time=0.581 ms
+64 bytes from 49.101.0.1: icmp_seq=5 ttl=61 time=0.347 ms
+64 bytes from 49.101.0.1: icmp_seq=6 ttl=61 time=0.416 ms
+64 bytes from 49.101.0.1: icmp_seq=7 ttl=61 time=0.415 ms
+64 bytes from 49.101.0.1: icmp_seq=8 ttl=61 time=0.458 ms
+64 bytes from 49.101.0.1: icmp_seq=9 ttl=61 time=0.445 ms
+64 bytes from 49.101.0.1: icmp_seq=10 ttl=61 time=0.451 ms
+
+--- 49.101.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9204ms
+rtt min/avg/max/mdev = 0.347/0.499/0.777/0.120 ms
+root@MIAM_host:~# ping 49.103.0.1 -c 10
+PING 49.103.0.1 (49.103.0.1) 56(84) bytes of data.
+64 bytes from 49.103.0.1: icmp_seq=1 ttl=62 time=0.424 ms
+64 bytes from 49.103.0.1: icmp_seq=2 ttl=62 time=0.270 ms
+64 bytes from 49.103.0.1: icmp_seq=3 ttl=62 time=0.322 ms
+64 bytes from 49.103.0.1: icmp_seq=4 ttl=62 time=0.310 ms
+64 bytes from 49.103.0.1: icmp_seq=5 ttl=62 time=0.277 ms
+64 bytes from 49.103.0.1: icmp_seq=6 ttl=62 time=0.311 ms
+64 bytes from 49.103.0.1: icmp_seq=7 ttl=62 time=0.282 ms
+64 bytes from 49.103.0.1: icmp_seq=8 ttl=62 time=0.255 ms
+64 bytes from 49.103.0.1: icmp_seq=9 ttl=62 time=0.368 ms
+64 bytes from 49.103.0.1: icmp_seq=10 ttl=62 time=0.267 ms
+
+--- 49.103.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9212ms
+rtt min/avg/max/mdev = 0.255/0.308/0.424/0.053 ms
+root@MIAM_host:~# ping 49.108.0.1 -c 10
+PING 49.108.0.1 (49.108.0.1) 56(84) bytes of data.
+64 bytes from 49.108.0.1: icmp_seq=1 ttl=64 time=0.025 ms
+64 bytes from 49.108.0.1: icmp_seq=2 ttl=64 time=0.032 ms
+64 bytes from 49.108.0.1: icmp_seq=3 ttl=64 time=0.033 ms
+64 bytes from 49.108.0.1: icmp_seq=4 ttl=64 time=0.035 ms
+64 bytes from 49.108.0.1: icmp_seq=5 ttl=64 time=0.038 ms
+64 bytes from 49.108.0.1: icmp_seq=6 ttl=64 time=0.034 ms
+64 bytes from 49.108.0.1: icmp_seq=7 ttl=64 time=0.016 ms
+64 bytes from 49.108.0.1: icmp_seq=8 ttl=64 time=0.032 ms
+64 bytes from 49.108.0.1: icmp_seq=9 ttl=64 time=0.040 ms
+64 bytes from 49.108.0.1: icmp_seq=10 ttl=64 time=0.028 ms
+
+--- 49.108.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9216ms
+rtt min/avg/max/mdev = 0.016/0.031/0.040/0.007 ms
+root@MIAM_host:~# ping 49.107.0.1 -c 10
+PING 49.107.0.1 (49.107.0.1) 56(84) bytes of data.
+64 bytes from 49.107.0.1: icmp_seq=1 ttl=62 time=0.359 ms
+64 bytes from 49.107.0.1: icmp_seq=2 ttl=62 time=0.385 ms
+64 bytes from 49.107.0.1: icmp_seq=3 ttl=62 time=0.437 ms
+64 bytes from 49.107.0.1: icmp_seq=4 ttl=62 time=0.392 ms
+64 bytes from 49.107.0.1: icmp_seq=5 ttl=62 time=0.385 ms
+64 bytes from 49.107.0.1: icmp_seq=6 ttl=62 time=0.393 ms
+64 bytes from 49.107.0.1: icmp_seq=7 ttl=62 time=0.439 ms
+64 bytes from 49.107.0.1: icmp_seq=8 ttl=62 time=0.400 ms
+64 bytes from 49.107.0.1: icmp_seq=9 ttl=62 time=0.485 ms
+64 bytes from 49.107.0.1: icmp_seq=10 ttl=62 time=0.414 ms
+
+--- 49.107.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9193ms
+rtt min/avg/max/mdev = 0.359/0.408/0.485/0.043 ms
+root@MIAM_host:~# ping 49.105.0.1 -c 10
+PING 49.105.0.1 (49.105.0.1) 56(84) bytes of data.
+64 bytes from 49.105.0.1: icmp_seq=1 ttl=62 time=0.262 ms
+64 bytes from 49.105.0.1: icmp_seq=2 ttl=62 time=0.208 ms
+64 bytes from 49.105.0.1: icmp_seq=3 ttl=62 time=0.162 ms
+64 bytes from 49.105.0.1: icmp_seq=4 ttl=62 time=0.181 ms
+64 bytes from 49.105.0.1: icmp_seq=5 ttl=62 time=0.203 ms
+64 bytes from 49.105.0.1: icmp_seq=6 ttl=62 time=0.212 ms
+64 bytes from 49.105.0.1: icmp_seq=7 ttl=62 time=0.156 ms
+64 bytes from 49.105.0.1: icmp_seq=8 ttl=62 time=0.168 ms
+64 bytes from 49.105.0.1: icmp_seq=9 ttl=62 time=0.181 ms
+64 bytes from 49.105.0.1: icmp_seq=10 ttl=62 time=0.155 ms
+
+--- 49.105.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9198ms
+rtt min/avg/max/mdev = 0.155/0.188/0.262/0.036 ms
+root@MIAM_host:~# ping 49.106.0.1 -c 10
+PING 49.106.0.1 (49.106.0.1) 56(84) bytes of data.
+64 bytes from 49.106.0.1: icmp_seq=1 ttl=61 time=0.902 ms
+64 bytes from 49.106.0.1: icmp_seq=2 ttl=61 time=0.394 ms
+64 bytes from 49.106.0.1: icmp_seq=3 ttl=61 time=0.278 ms
+64 bytes from 49.106.0.1: icmp_seq=4 ttl=61 time=0.277 ms
+64 bytes from 49.106.0.1: icmp_seq=5 ttl=61 time=0.342 ms
+64 bytes from 49.106.0.1: icmp_seq=6 ttl=61 time=0.217 ms
+64 bytes from 49.106.0.1: icmp_seq=7 ttl=61 time=0.388 ms
+64 bytes from 49.106.0.1: icmp_seq=8 ttl=61 time=0.345 ms
+64 bytes from 49.106.0.1: icmp_seq=9 ttl=61 time=0.378 ms
+64 bytes from 49.106.0.1: icmp_seq=10 ttl=61 time=0.280 ms
+
+--- 49.106.0.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9194ms
+rtt min/avg/max/mdev = 0.217/0.380/0.902/0.182 ms
+root@MIAM_host:~# 

@@ -1,0 +1,556 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 02:36:44 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh LOND router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+LOND_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+dns_49          up      default         198.0.0.49/24
+ext_47_GENE     up      default         
+host            up      default         49.101.0.2/24
+lo              up      default         49.151.0.1/24
+port_BOST       up      default         49.0.7.1/24
+port_NEWY       up      default         49.0.8.1/24
+port_PARI       up      default         49.0.4.2/24
+port_ZURI       up      default         49.0.2.2/24
+ssh             up      default         158.49.10.1/16
+
+LOND_router# conf t
+LOND_router(config)# router ospf
+LOND_router(config-router)# network 49.101.0.2/24 area 0
+LOND_router(config-router)# network 49.151.0.1/24 area 0
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# conf t
+LOND_router(config)# router ospf
+LOND_router(config-router)# no network 198.0.0.0/24 area 0
+LOND_router(config-router)# no network 49.101.0.0/24 area 0
+LOND_router(config-router)# no network 49.151.0.0/24 area 0
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# conf t
+LOND_router(config)# router ospf
+LOND_router(config-router)# no network 49.101.0.2/24 area 0
+Can't find specified network area configuration.
+LOND_router(config-router)# no network 49.151.0.1/24 area 0
+Can't find specified network area configuration.
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# ping 49.0.4.1\
+ping: 49.0.4.1\: Temporary failure in name resolution
+LOND_router# ping 49.0.4.1 
+PING 49.0.4.1 (49.0.4.1) 56(84) bytes of data.
+64 bytes from 49.0.4.1: icmp_seq=1 ttl=64 time=0.223 ms
+64 bytes from 49.0.4.1: icmp_seq=2 ttl=64 time=0.162 ms
+^C
+--- 49.0.4.1 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1016ms
+rtt min/avg/max/mdev = 0.162/0.192/0.223/0.033 ms
+LOND_router# ping 49.0.4.2
+PING 49.0.4.2 (49.0.4.2) 56(84) bytes of data.
+64 bytes from 49.0.4.2: icmp_seq=1 ttl=64 time=0.028 ms
+64 bytes from 49.0.4.2: icmp_seq=2 ttl=64 time=0.049 ms
+64 bytes from 49.0.4.2: icmp_seq=3 ttl=64 time=0.049 ms
+^C
+--- 49.0.4.2 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2043ms
+rtt min/avg/max/mdev = 0.028/0.042/0.049/0.009 ms
+LOND_router# ping 49.101.0.1
+PING 49.101.0.1 (49.101.0.1) 56(84) bytes of data.
+64 bytes from 49.101.0.1: icmp_seq=1 ttl=64 time=0.801 ms
+64 bytes from 49.101.0.1: icmp_seq=2 ttl=64 time=0.069 ms
+64 bytes from 49.101.0.1: icmp_seq=3 ttl=64 time=0.062 ms
+^C
+--- 49.101.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2038ms
+rtt min/avg/max/mdev = 0.062/0.310/0.801/0.347 ms
+LOND_router# ping 49.101.0.2
+PING 49.101.0.2 (49.101.0.2) 56(84) bytes of data.
+64 bytes from 49.101.0.2: icmp_seq=1 ttl=64 time=0.029 ms
+64 bytes from 49.101.0.2: icmp_seq=2 ttl=64 time=0.041 ms
+^C
+--- 49.101.0.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 0.029/0.035/0.041/0.006 ms
+LOND_router# ping 49.151.0.2
+PING 49.151.0.2 (49.151.0.2) 56(84) bytes of data.
+64 bytes from 49.151.0.2: icmp_seq=1 ttl=64 time=0.029 ms
+64 bytes from 49.151.0.2: icmp_seq=2 ttl=64 time=0.042 ms
+64 bytes from 49.151.0.2: icmp_seq=3 ttl=64 time=0.049 ms
+64 bytes from 49.151.0.2: icmp_seq=4 ttl=64 time=0.041 ms
+^C
+--- 49.151.0.2 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3048ms
+rtt min/avg/max/mdev = 0.029/0.040/0.049/0.008 ms
+LOND_router# show interface
+Interface dns_49 is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 13:12:16.32
+  Link downs:     1    last: 2022/11/12 13:12:16.32
+  vrf: default
+  index 13300 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 62:83:df:88:94:08
+  inet 198.0.0.49/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ext_47_GENE is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:19:20.66
+  Link downs:     1    last: 2022/11/12 11:19:20.66
+  vrf: default
+  index 8374 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 5a:88:77:04:d0:5c
+  Interface Type VETH
+  Interface Slave Type None
+Interface host is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 05:57:35.72
+  Link downs:     1    last: 2022/11/12 05:57:35.72
+  vrf: default
+  index 1012 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 92:a8:45:75:0e:24
+  inet 49.101.0.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface lo is up, line protocol is up
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  index 1 metric 0 mtu 65536 speed 0 
+  flags: <UP,LOOPBACK,RUNNING>
+  Type: Loopback
+  inet 49.151.0.1/24
+  Interface Type Other
+  Interface Slave Type None
+Interface port_BOST is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:41:07.35
+  Link downs:     1    last: 2022/11/12 09:41:07.34
+  vrf: default
+  index 6172 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 6e:cd:71:ba:9d:ef
+  inet 49.0.7.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_NEWY is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:41:23.46
+  Link downs:     1    last: 2022/11/12 09:41:23.46
+  vrf: default
+  index 6176 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 06:f7:3e:ac:8e:d5
+  inet 49.0.8.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_PARI is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:40:19.89
+  Link downs:     1    last: 2022/11/12 09:40:19.88
+  vrf: default
+  index 6162 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: de:1a:90:56:1c:eb
+  inet 49.0.4.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_ZURI is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:39:48.26
+  Link downs:     1    last: 2022/11/12 09:39:48.25
+  vrf: default
+  index 6154 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 1a:df:2a:31:92:a5
+  inet 49.0.2.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ssh is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:50:49.08
+  Link downs:     1    last: 2022/11/12 11:50:49.07
+  vrf: default
+  index 11514 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 0a:cc:f5:36:30:b2
+  inet 158.49.10.1/16
+  Interface Type VETH
+  Interface Slave Type None
+LOND_router# ping 49.0.4.2
+PING 49.0.4.2 (49.0.4.2) 56(84) bytes of data.
+64 bytes from 49.0.4.2: icmp_seq=1 ttl=64 time=0.025 ms
+64 bytes from 49.0.4.2: icmp_seq=2 ttl=64 time=0.043 ms
+^C
+--- 49.0.4.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1032ms
+rtt min/avg/max/mdev = 0.025/0.034/0.043/0.009 ms
+LOND_router# ping 49.0.4.1
+PING 49.0.4.1 (49.0.4.1) 56(84) bytes of data.
+64 bytes from 49.0.4.1: icmp_seq=1 ttl=64 time=0.194 ms
+64 bytes from 49.0.4.1: icmp_seq=2 ttl=64 time=0.151 ms
+64 bytes from 49.0.4.1: icmp_seq=3 ttl=64 time=0.162 ms
+64 bytes from 49.0.4.1: icmp_seq=4 ttl=64 time=0.162 ms
+^C
+--- 49.0.4.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3056ms
+rtt min/avg/max/mdev = 0.151/0.167/0.194/0.018 ms
+LOND_router# traceroute 49.0.4.1
+traceroute to 49.0.4.1 (49.0.4.1), 64 hops max
+  1   49.0.4.1  0.191ms  0.212ms  0.213ms 
+LOND_router# ping 49.0.4.1
+PING 49.0.4.1 (49.0.4.1) 56(84) bytes of data.
+64 bytes from 49.0.4.1: icmp_seq=1 ttl=64 time=0.194 ms
+64 bytes from 49.0.4.1: icmp_seq=2 ttl=64 time=0.151 ms
+64 bytes from 49.0.4.1: icmp_seq=3 ttl=64 time=0.259 ms
+64 bytes from 49.0.4.1: icmp_seq=4 ttl=64 time=0.221 ms
+64 bytes from 49.0.4.1: icmp_seq=5 ttl=64 time=0.171 ms
+64 bytes from 49.0.4.1: icmp_seq=6 ttl=64 time=0.179 ms
+64 bytes from 49.0.4.1: icmp_seq=7 ttl=64 time=0.154 ms
+64 bytes from 49.0.4.1: icmp_seq=8 ttl=64 time=0.160 ms
+64 bytes from 49.0.4.1: icmp_seq=9 ttl=64 time=0.219 ms
+64 bytes from 49.0.4.1: icmp_seq=10 ttl=64 time=0.178 ms
+64 bytes from 49.0.4.1: icmp_seq=11 ttl=64 time=0.344 ms
+64 bytes from 49.0.4.1: icmp_seq=12 ttl=64 time=0.187 ms
+64 bytes from 49.0.4.1: icmp_seq=13 ttl=64 time=0.181 ms
+64 bytes from 49.0.4.1: icmp_seq=14 ttl=64 time=0.173 ms
+64 bytes from 49.0.4.1: icmp_seq=15 ttl=64 time=0.175 ms
+64 bytes from 49.0.4.1: icmp_seq=16 ttl=64 time=0.237 ms
+64 bytes from 49.0.4.1: icmp_seq=17 ttl=64 time=0.164 ms
+64 bytes from 49.0.4.1: icmp_seq=18 ttl=64 time=0.133 ms
+64 bytes from 49.0.4.1: icmp_seq=19 ttl=64 time=0.190 ms
+64 bytes from 49.0.4.1: icmp_seq=20 ttl=64 time=0.168 ms
+64 bytes from 49.0.4.1: icmp_seq=21 ttl=64 time=0.173 ms
+64 bytes from 49.0.4.1: icmp_seq=22 ttl=64 time=0.184 ms
+64 bytes from 49.0.4.1: icmp_seq=23 ttl=64 time=0.251 ms
+64 bytes from 49.0.4.1: icmp_seq=24 ttl=64 time=0.156 ms
+64 bytes from 49.0.4.1: icmp_seq=25 ttl=64 time=0.294 ms
+64 bytes from 49.0.4.1: icmp_seq=26 ttl=64 time=0.162 ms
+64 bytes from 49.0.4.1: icmp_seq=27 ttl=64 time=0.163 ms
+64 bytes from 49.0.4.1: icmp_seq=28 ttl=64 time=0.240 ms
+64 bytes from 49.0.4.1: icmp_seq=29 ttl=64 time=0.144 ms
+64 bytes from 49.0.4.1: icmp_seq=30 ttl=64 time=0.191 ms
+64 bytes from 49.0.4.1: icmp_seq=31 ttl=64 time=0.262 ms
+64 bytes from 49.0.4.1: icmp_seq=32 ttl=64 time=0.163 ms
+64 bytes from 49.0.4.1: icmp_seq=33 ttl=64 time=0.199 ms
+64 bytes from 49.0.4.1: icmp_seq=34 ttl=64 time=0.157 ms
+64 bytes from 49.0.4.1: icmp_seq=35 ttl=64 time=0.147 ms
+64 bytes from 49.0.4.1: icmp_seq=36 ttl=64 time=0.187 ms
+64 bytes from 49.0.4.1: icmp_seq=37 ttl=64 time=0.240 ms
+64 bytes from 49.0.4.1: icmp_seq=38 ttl=64 time=0.168 ms
+64 bytes from 49.0.4.1: icmp_seq=39 ttl=64 time=0.176 ms
+64 bytes from 49.0.4.1: icmp_seq=40 ttl=64 time=0.181 ms
+64 bytes from 49.0.4.1: icmp_seq=41 ttl=64 time=0.161 ms
+64 bytes from 49.0.4.1: icmp_seq=42 ttl=64 time=0.232 ms
+64 bytes from 49.0.4.1: icmp_seq=43 ttl=64 time=0.150 ms
+64 bytes from 49.0.4.1: icmp_seq=44 ttl=64 time=0.152 ms
+64 bytes from 49.0.4.1: icmp_seq=45 ttl=64 time=0.212 ms
+64 bytes from 49.0.4.1: icmp_seq=46 ttl=64 time=0.169 ms
+64 bytes from 49.0.4.1: icmp_seq=47 ttl=64 time=0.181 ms
+64 bytes from 49.0.4.1: icmp_seq=48 ttl=64 time=0.154 ms
+64 bytes from 49.0.4.1: icmp_seq=49 ttl=64 time=0.170 ms
+64 bytes from 49.0.4.1: icmp_seq=50 ttl=64 time=0.155 ms
+64 bytes from 49.0.4.1: icmp_seq=51 ttl=64 time=0.215 ms
+64 bytes from 49.0.4.1: icmp_seq=52 ttl=64 time=0.176 ms
+64 bytes from 49.0.4.1: icmp_seq=53 ttl=64 time=0.236 ms
+64 bytes from 49.0.4.1: icmp_seq=54 ttl=64 time=0.186 ms
+64 bytes from 49.0.4.1: icmp_seq=55 ttl=64 time=0.343 ms
+64 bytes from 49.0.4.1: icmp_seq=56 ttl=64 time=0.156 ms
+64 bytes from 49.0.4.1: icmp_seq=57 ttl=64 time=0.163 ms
+64 bytes from 49.0.4.1: icmp_seq=58 ttl=64 time=0.266 ms
+64 bytes from 49.0.4.1: icmp_seq=59 ttl=64 time=0.155 ms
+64 bytes from 49.0.4.1: icmp_seq=60 ttl=64 time=0.160 ms
+64 bytes from 49.0.4.1: icmp_seq=61 ttl=64 time=0.193 ms
+64 bytes from 49.0.4.1: icmp_seq=62 ttl=64 time=0.193 ms
+64 bytes from 49.0.4.1: icmp_seq=63 ttl=64 time=0.194 ms
+64 bytes from 49.0.4.1: icmp_seq=64 ttl=64 time=0.187 ms
+64 bytes from 49.0.4.1: icmp_seq=65 ttl=64 time=0.184 ms
+64 bytes from 49.0.4.1: icmp_seq=66 ttl=64 time=0.166 ms
+64 bytes from 49.0.4.1: icmp_seq=67 ttl=64 time=0.167 ms
+64 bytes from 49.0.4.1: icmp_seq=68 ttl=64 time=0.137 ms
+64 bytes from 49.0.4.1: icmp_seq=69 ttl=64 time=0.148 ms
+64 bytes from 49.0.4.1: icmp_seq=70 ttl=64 time=0.162 ms
+64 bytes from 49.0.4.1: icmp_seq=71 ttl=64 time=0.206 ms
+64 bytes from 49.0.4.1: icmp_seq=72 ttl=64 time=0.179 ms
+64 bytes from 49.0.4.1: icmp_seq=73 ttl=64 time=0.288 ms
+64 bytes from 49.0.4.1: icmp_seq=74 ttl=64 time=0.170 ms
+64 bytes from 49.0.4.1: icmp_seq=75 ttl=64 time=0.157 ms
+64 bytes from 49.0.4.1: icmp_seq=76 ttl=64 time=0.138 ms
+64 bytes from 49.0.4.1: icmp_seq=77 ttl=64 time=0.140 ms
+64 bytes from 49.0.4.1: icmp_seq=78 ttl=64 time=0.158 ms
+64 bytes from 49.0.4.1: icmp_seq=79 ttl=64 time=0.166 ms
+64 bytes from 49.0.4.1: icmp_seq=80 ttl=64 time=0.172 ms
+64 bytes from 49.0.4.1: icmp_seq=81 ttl=64 time=0.185 ms
+64 bytes from 49.0.4.1: icmp_seq=82 ttl=64 time=0.158 ms
+64 bytes from 49.0.4.1: icmp_seq=83 ttl=64 time=0.165 ms
+64 bytes from 49.0.4.1: icmp_seq=84 ttl=64 time=0.152 ms
+64 bytes from 49.0.4.1: icmp_seq=85 ttl=64 time=0.231 ms
+64 bytes from 49.0.4.1: icmp_seq=86 ttl=64 time=0.175 ms
+64 bytes from 49.0.4.1: icmp_seq=87 ttl=64 time=0.161 ms
+64 bytes from 49.0.4.1: icmp_seq=88 ttl=64 time=0.163 ms
+64 bytes from 49.0.4.1: icmp_seq=89 ttl=64 time=0.210 ms
+64 bytes from 49.0.4.1: icmp_seq=90 ttl=64 time=0.206 ms
+64 bytes from 49.0.4.1: icmp_seq=91 ttl=64 time=0.222 ms
+64 bytes from 49.0.4.1: icmp_seq=92 ttl=64 time=0.482 ms
+64 bytes from 49.0.4.1: icmp_seq=93 ttl=64 time=0.170 ms
+64 bytes from 49.0.4.1: icmp_seq=94 ttl=64 time=0.155 ms
+64 bytes from 49.0.4.1: icmp_seq=95 ttl=64 time=0.179 ms
+64 bytes from 49.0.4.1: icmp_seq=96 ttl=64 time=0.175 ms
+64 bytes from 49.0.4.1: icmp_seq=97 ttl=64 time=0.215 ms
+64 bytes from 49.0.4.1: icmp_seq=98 ttl=64 time=0.148 ms
+64 bytes from 49.0.4.1: icmp_seq=99 ttl=64 time=0.729 ms
+64 bytes from 49.0.4.1: icmp_seq=100 ttl=64 time=0.175 ms
+64 bytes from 49.0.4.1: icmp_seq=101 ttl=64 time=0.175 ms
+64 bytes from 49.0.4.1: icmp_seq=102 ttl=64 time=0.243 ms
+^C
+--- 49.0.4.1 ping statistics ---
+102 packets transmitted, 102 received, 0% packet loss, time 103391ms
+rtt min/avg/max/mdev = 0.133/0.194/0.729/0.074 ms
+LOND_router# show interface
+Interface dns_49 is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 13:12:16.32
+  Link downs:     1    last: 2022/11/12 13:12:16.32
+  vrf: default
+  index 13300 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 62:83:df:88:94:08
+  inet 198.0.0.49/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ext_47_GENE is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:19:20.66
+  Link downs:     1    last: 2022/11/12 11:19:20.66
+  vrf: default
+  index 8374 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 5a:88:77:04:d0:5c
+  Interface Type VETH
+  Interface Slave Type None
+Interface host is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 05:57:35.72
+  Link downs:     1    last: 2022/11/12 05:57:35.72
+  vrf: default
+  index 1012 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 92:a8:45:75:0e:24
+  inet 49.101.0.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface lo is up, line protocol is up
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  index 1 metric 0 mtu 65536 speed 0 
+  flags: <UP,LOOPBACK,RUNNING>
+  Type: Loopback
+  inet 49.151.0.1/24
+  Interface Type Other
+  Interface Slave Type None
+Interface port_BOST is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:41:07.35
+  Link downs:     1    last: 2022/11/12 09:41:07.34
+  vrf: default
+  index 6172 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 6e:cd:71:ba:9d:ef
+  inet 49.0.7.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_NEWY is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:41:23.46
+  Link downs:     1    last: 2022/11/12 09:41:23.46
+  vrf: default
+  index 6176 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 06:f7:3e:ac:8e:d5
+  inet 49.0.8.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_PARI is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:40:19.89
+  Link downs:     1    last: 2022/11/12 09:40:19.88
+  vrf: default
+  index 6162 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: de:1a:90:56:1c:eb
+  inet 49.0.4.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_ZURI is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:39:48.26
+  Link downs:     1    last: 2022/11/12 09:39:48.25
+  vrf: default
+  index 6154 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 1a:df:2a:31:92:a5
+  inet 49.0.2.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ssh is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:50:49.08
+  Link downs:     1    last: 2022/11/12 11:50:49.07
+  vrf: default
+  index 11514 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 0a:cc:f5:36:30:b2
+  inet 158.49.10.1/16
+  Interface Type VETH
+  Interface Slave Type None
+LOND_router# conf t
+LOND_router(config)# router ospf
+LOND_router(config-router)# network 198.0.0.0/24 area 0
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# ping 49.0.4.1
+PING 49.0.4.1 (49.0.4.1) 56(84) bytes of data.
+64 bytes from 49.0.4.1: icmp_seq=1 ttl=64 time=0.163 ms
+64 bytes from 49.0.4.1: icmp_seq=2 ttl=64 time=0.165 ms
+64 bytes from 49.0.4.1: icmp_seq=3 ttl=64 time=0.162 ms
+64 bytes from 49.0.4.1: icmp_seq=4 ttl=64 time=0.261 ms
+64 bytes from 49.0.4.1: icmp_seq=5 ttl=64 time=0.226 ms
+64 bytes from 49.0.4.1: icmp_seq=6 ttl=64 time=0.169 ms
+64 bytes from 49.0.4.1: icmp_seq=7 ttl=64 time=0.167 ms
+64 bytes from 49.0.4.1: icmp_seq=8 ttl=64 time=0.162 ms
+64 bytes from 49.0.4.1: icmp_seq=9 ttl=64 time=0.163 ms
+64 bytes from 49.0.4.1: icmp_seq=10 ttl=64 time=0.298 ms
+64 bytes from 49.0.4.1: icmp_seq=11 ttl=64 time=0.180 ms
+64 bytes from 49.0.4.1: icmp_seq=12 ttl=64 time=0.161 ms
+64 bytes from 49.0.4.1: icmp_seq=13 ttl=64 time=0.172 ms
+64 bytes from 49.0.4.1: icmp_seq=14 ttl=64 time=0.285 ms
+64 bytes from 49.0.4.1: icmp_seq=15 ttl=64 time=0.185 ms
+64 bytes from 49.0.4.1: icmp_seq=16 ttl=64 time=0.139 ms
+64 bytes from 49.0.4.1: icmp_seq=17 ttl=64 time=0.179 ms
+64 bytes from 49.0.4.1: icmp_seq=18 ttl=64 time=0.171 ms
+64 bytes from 49.0.4.1: icmp_seq=19 ttl=64 time=0.168 ms
+64 bytes from 49.0.4.1: icmp_seq=20 ttl=64 time=0.187 ms
+64 bytes from 49.0.4.1: icmp_seq=21 ttl=64 time=0.152 ms
+64 bytes from 49.0.4.1: icmp_seq=22 ttl=64 time=0.232 ms
+64 bytes from 49.0.4.1: icmp_seq=23 ttl=64 time=0.179 ms
+64 bytes from 49.0.4.1: icmp_seq=24 ttl=64 time=0.193 ms
+64 bytes from 49.0.4.1: icmp_seq=25 ttl=64 time=0.204 ms
+64 bytes from 49.0.4.1: icmp_seq=26 ttl=64 time=0.163 ms
+64 bytes from 49.0.4.1: icmp_seq=27 ttl=64 time=0.224 ms
+64 bytes from 49.0.4.1: icmp_seq=28 ttl=64 time=0.180 ms
+64 bytes from 49.0.4.1: icmp_seq=29 ttl=64 time=0.217 ms
+64 bytes from 49.0.4.1: icmp_seq=30 ttl=64 time=0.193 ms
+64 bytes from 49.0.4.1: icmp_seq=31 ttl=64 time=0.181 ms
+64 bytes from 49.0.4.1: icmp_seq=32 ttl=64 time=0.168 ms
+64 bytes from 49.0.4.1: icmp_seq=33 ttl=64 time=0.144 ms
+64 bytes from 49.0.4.1: icmp_seq=34 ttl=64 time=0.165 ms
+64 bytes from 49.0.4.1: icmp_seq=35 ttl=64 time=0.182 ms
+64 bytes from 49.0.4.1: icmp_seq=36 ttl=64 time=0.262 ms
+64 bytes from 49.0.4.1: icmp_seq=37 ttl=64 time=0.202 ms
+64 bytes from 49.0.4.1: icmp_seq=38 ttl=64 time=0.225 ms
+64 bytes from 49.0.4.1: icmp_seq=39 ttl=64 time=0.157 ms
+64 bytes from 49.0.4.1: icmp_seq=40 ttl=64 time=0.165 ms
+64 bytes from 49.0.4.1: icmp_seq=41 ttl=64 time=0.201 ms
+64 bytes from 49.0.4.1: icmp_seq=42 ttl=64 time=0.282 ms
+64 bytes from 49.0.4.1: icmp_seq=43 ttl=64 time=0.146 ms
+64 bytes from 49.0.4.1: icmp_seq=44 ttl=64 time=0.170 ms
+64 bytes from 49.0.4.1: icmp_seq=45 ttl=64 time=0.172 ms
+64 bytes from 49.0.4.1: icmp_seq=46 ttl=64 time=0.206 ms
+64 bytes from 49.0.4.1: icmp_seq=47 ttl=64 time=0.213 ms
+64 bytes from 49.0.4.1: icmp_seq=48 ttl=64 time=0.138 ms
+64 bytes from 49.0.4.1: icmp_seq=49 ttl=64 time=0.159 ms
+64 bytes from 49.0.4.1: icmp_seq=50 ttl=64 time=0.168 ms
+64 bytes from 49.0.4.1: icmp_seq=51 ttl=64 time=0.190 ms
+64 bytes from 49.0.4.1: icmp_seq=52 ttl=64 time=0.228 ms
+64 bytes from 49.0.4.1: icmp_seq=53 ttl=64 time=0.162 ms
+^C
+--- 49.0.4.1 ping statistics ---
+53 packets transmitted, 53 received, 0% packet loss, time 53232ms
+rtt min/avg/max/mdev = 0.138/0.188/0.298/0.039 ms
+LOND_router# ping 49.0.4.1
+PING 49.0.4.1 (49.0.4.1) 56(84) bytes of data.
+64 bytes from 49.0.4.1: icmp_seq=1 ttl=64 time=0.182 ms
+64 bytes from 49.0.4.1: icmp_seq=2 ttl=64 time=0.196 ms
+64 bytes from 49.0.4.1: icmp_seq=3 ttl=64 time=0.362 ms
+^C
+--- 49.0.4.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2043ms
+rtt min/avg/max/mdev = 0.182/0.246/0.362/0.083 ms
+LOND_router# ping 49.0.103.0.2
+ping: 49.0.103.0.2: Temporary failure in name resolution
+LOND_router# ping 49.103.0.2
+connect: Network is unreachable
+LOND_router# ping 49.103.0.1
+connect: Network is unreachable
+LOND_router# ping 49.103.0.1
+connect: Network is unreachable
+LOND_router# ping 49.103.0.2
+connect: Network is unreachable
+LOND_router# ping 49.103.0.2
+PING 49.103.0.2 (49.103.0.2) 56(84) bytes of data.
+64 bytes from 49.103.0.2: icmp_seq=1 ttl=64 time=0.258 ms
+64 bytes from 49.103.0.2: icmp_seq=2 ttl=64 time=0.218 ms
+64 bytes from 49.103.0.2: icmp_seq=3 ttl=64 time=0.175 ms
+^C
+--- 49.103.0.2 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2054ms
+rtt min/avg/max/mdev = 0.175/0.217/0.258/0.033 ms
+LOND_router# conf t
+LOND_router(config)# router ospf
+LOND_router(config-router)# network 49.101.0.2/24 area 0
+LOND_router(config-router)# network 49.101.0.1/24 area 0
+LOND_router(config-router)# network 49.151.0.1/24 area 0
+LOND_router(config-router)# network 49.151.0.2/24 area 0
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip route ospf
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+O>* 49.0.1.0/24 [110/20] via 49.0.4.1, port_PARI, weight 1, 01:34:16
+O   49.0.2.0/24 [110/10] is directly connected, port_ZURI, weight 1, 01:35:30
+O>* 49.0.3.0/24 [110/20] via 49.0.4.1, port_PARI, weight 1, 01:34:19
+O   49.0.4.0/24 [110/10] is directly connected, port_PARI, weight 1, 02:44:26
+O>* 49.0.5.0/24 [110/20] via 49.0.4.1, port_PARI, weight 1, 01:34:17
+O>* 49.0.6.0/24 [110/20] via 49.0.4.1, port_PARI, weight 1, 01:34:18
+O   49.0.7.0/24 [110/10] is directly connected, port_BOST, weight 1, 01:35:32
+O   49.0.8.0/24 [110/10] is directly connected, port_NEWY, weight 1, 01:35:31
+O>* 49.0.198.0/24 [110/20] via 49.0.4.1, port_PARI, weight 1, 02:43:06
+O   49.101.0.0/24 [110/10] is directly connected, host, weight 1, 00:05:53
+O>* 49.103.0.0/24 [110/20] via 49.0.4.1, port_PARI, weight 1, 00:06:56
+O>* 49.151.0.1/32 [110/0] is directly connected, lo, weight 1, 00:05:51
+O>* 49.153.0.1/32 [110/10] via 49.0.4.1, port_PARI, weight 1, 00:06:53
+O   198.0.0.0/24 [110/10] is directly connected, dns_49, weight 1, 00:13:05
+LOND_router# show ip ospf neighbor
+
+Neighbor ID     Pri State           Dead Time Address         Interface                        RXmtL RqstL DBsmL
+158.49.12.1       1 Full/Backup       38.770s 49.0.4.1        port_PARI:49.0.4.2                   0     0     0
+49.155.0.1        1 Full/Backup       35.871s 49.0.8.2        port_NEWY:49.0.8.1                   0     0     0
+
+LOND_router# 

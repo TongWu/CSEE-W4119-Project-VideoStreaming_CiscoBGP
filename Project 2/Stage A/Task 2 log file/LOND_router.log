@@ -1,0 +1,1390 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Thu Nov 24 21:56:45 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh LOND router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.1        4         49         5         3        0    0    0 00:00:08            2        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# 
+LOND_router(config-router)# neighbor 49.0.7.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.2.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.8.2 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49         6         4        0    0    0 00:01:37            2        0
+49.0.7.2        4         49         0         0        0    0    0    never       Active        0
+49.0.8.2        4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 4
+LOND_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 49.0.0.0/8 [200/0] via 49.0.4.1, port_PARI, weight 1, 00:02:40
+LOND_router# show ip bgp
+BGP table version is 1, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.0.4.1                 0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router# ping 100.101.0.1
+connect: Network is unreachable
+LOND_router# ping 180.0.49.2 
+connect: Network is unreachable
+LOND_router# ping 49.0.4.1
+PING 49.0.4.1 (49.0.4.1) 56(84) bytes of data.
+64 bytes from 49.0.4.1: icmp_seq=1 ttl=64 time=0.259 ms
+64 bytes from 49.0.4.1: icmp_seq=2 ttl=64 time=0.150 ms
+64 bytes from 49.0.4.1: icmp_seq=3 ttl=64 time=0.229 ms
+64 bytes from 49.0.4.1: icmp_seq=4 ttl=64 time=0.181 ms
+64 bytes from 49.0.4.1: icmp_seq=5 ttl=64 time=0.155 ms
+64 bytes from 49.0.4.1: icmp_seq=6 ttl=64 time=0.152 ms
+64 bytes from 49.0.4.1: icmp_seq=7 ttl=64 time=0.149 ms
+64 bytes from 49.0.4.1: icmp_seq=8 ttl=64 time=0.250 ms
+^C
+--- 49.0.4.1 ping statistics ---
+8 packets transmitted, 8 received, 0% packet loss, time 7167ms
+rtt min/avg/max/mdev = 0.149/0.190/0.259/0.047 ms
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49        14        12        0    0    0 00:09:18            2        0
+49.0.7.2        4         49         0         0        0    0    0    never       Active        0
+49.0.8.2        4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 4
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# ping 100.101.0.1
+connect: Network is unreachable
+LOND_router# ping 180.49.2   
+connect: Network is unreachable
+LOND_router# ping 180.0.49.2
+connect: Network is unreachable
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49        16        14        0    0    0 00:11:12            2        0
+49.0.7.2        4         49         0         0        0    0    0    never       Active        0
+49.0.8.2        4         49         0         0        0    0    0    never       Active        0
+49.153.0.1      4         49        18         7        0    0    0    never         Idle        0
+
+Total number of neighbors 5
+LOND_router# show ip bgp
+BGP table version is 1, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.0.4.1                 0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# 
+LOND_router(config-router)# no neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.7.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.2.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.8.2 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49        21         8        0    0    0    never         Idle        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 3
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         5         3        0    0    0 00:00:07            2        0
+
+Total number of neighbors 1
+LOND_router# ping 100.101.0.1
+connect: Network is unreachable
+LOND_router# ping 180.0.49.2
+connect: Network is unreachable
+LOND_router# show ip bgp
+BGP table version is 3, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.153.0.1               0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router#  show ip bgp\
+% Unknown command:  show ip bgp\
+LOND_router#  show ip bgp 
+BGP table version is 3, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.153.0.1               0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router#  show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>  49.0.0.0/8 [200/0] via 49.153.0.1 (recursive), weight 1, 00:02:59
+  *                      via 49.0.4.1, port_PARI, weight 1, 00:02:59
+LOND_router#  show ip route bgp
+LOND_router#  show ip route bgp
+LOND_router# show ip route bgp
+LOND_router#  show ip bgp
+No BGP prefixes displayed, 0 exist
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# no neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp
+No BGP prefixes displayed, 0 exist
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# no neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+% No BGP neighbors found
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# neighbor 49.103.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.103.0.1      4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.103.0.1      4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# no neighbor 49.103.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.103.0.2 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.103.0.2      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.103.0.2      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# no neighbor 49.103.0.2 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# no neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# no router bgp 49
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# neighbor 49.153.0.1
+% Command incomplete: neighbor 49.153.0.1
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.155.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.156.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 3, using 64 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+49.155.0.1      4         49         0         1        0    0    0    never       Active        0
+49.156.0.1      4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 3
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.0.8.2 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum 
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.8.2        4         49         0         1        0    0    0    never       Active        0
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+49.155.0.1      4         49         0         1        0    0    0    never       Active        0
+49.156.0.1      4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 4
+LOND_router# conf -t 
+% Unknown command: conf -t
+LOND_router# conf t
+LOND_router(config)# no router bgp 49
+LOND_router(config)# exit
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.1        4         49         5         3        0    0    0 00:00:05            2        0
+
+Total number of neighbors 1
+LOND_router#  show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 49.0.0.0/8 [200/0] via 49.0.4.1, port_PARI, weight 1, 00:00:24
+LOND_router#  show ip bgp
+BGP table version is 1, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.0.4.1                 0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router# conf t
+LOND_router(config)# no router bgp 49
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         5         3        0    0    0 00:00:09            2        0
+
+Total number of neighbors 1
+LOND_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>  49.0.0.0/8 [200/0] via 49.153.0.1 (recursive), weight 1, 00:00:17
+  *                      via 49.0.4.1, port_PARI, weight 1, 00:00:17
+LOND_router# show ip bgp    
+BGP table version is 1, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.153.0.1               0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# network 49.0.0.0/8
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp
+BGP table version is 2, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*> 49.0.0.0/8       0.0.0.0                  0         32768 i
+* i                 49.153.0.1               0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 3 total paths
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         6         5        0    0    0 00:01:59            2        1
+
+Total number of neighbors 1
+LOND_router# conf t 
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no network 49.0.0.0/8
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp
+BGP table version is 3, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.153.0.1               0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router# ping 100.0.0.0
+connect: Network is unreachable
+LOND_router# ping 100.101.0.1
+connect: Network is unreachable
+LOND_router# conf t
+LOND_router(config)# no router bgp 49
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.1        4         49         5         3        0    0    0 00:00:10            2        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.1        4         49         5         3        0    0    0 00:00:33            2        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.1        4         49         5         3        0    0    0 00:00:34            2        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# no router bgp 49
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# neighbor 49.103.0.2 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.103.0.2      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.103.0.2 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+% No BGP neighbors found
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.103.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.103.0.1      4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.103.0.1      4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.103.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+% No BGP neighbors found
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# no router bgp 49
+LOND_router(config)# conf t
+% Unknown command: conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no bgp ebgp-requires-policy
+LOND_router(config-router)# no bgp network import-check
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 43 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.1        4         49         5         3        0    0    0 00:00:02            2        0
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 2
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 1
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.4.1        4         49         5         3        0    0    0 00:00:29            2        0
+
+Total number of neighbors 1
+LOND_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 49.0.0.0/8 [200/0] via 49.0.4.1, port_PARI, weight 1, 00:00:57
+LOND_router# show ip bgp
+BGP table version is 1, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.0.4.1                 0    100      0 i
+  i100.0.0.0/8      180.0.49.2               0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router# bgp 49
+% Unknown command: bgp 49
+LOND_router# show bgp 49
+% Unknown command: show bgp 49
+LOND_router# show roouter bgp 49
+% Unknown command: show roouter bgp 49
+LOND_router# show router bgp 49
+% Unknown command: show router bgp 49
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.0.4.1 next-hop-self
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp
+BGP table version is 2, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.0.4.1                 0    100      0 i
+*>i100.0.0.0/8      49.0.4.1                 0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router# 49.0.4.1
+% Unknown command: 49.0.4.1
+LOND_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 49.0.0.0/8 [200/0] via 49.0.4.1, port_PARI, weight 1, 00:42:16
+B>* 100.0.0.0/8 [200/0] via 49.0.4.1, port_PARI, weight 1, 00:24:09
+LOND_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=62 time=2.70 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=62 time=2.30 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=62 time=2.32 ms
+^C
+--- 100.101.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 2.308/2.447/2.706/0.187 ms
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.0.2.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.7.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.8.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.2.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.7.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.8.2 next-hop-self
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 4, using 85 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49       155       151        0    0    0 02:28:27            2        0
+49.0.7.2        4         49         0         0        0    0    0    never       Active        0
+49.0.8.2        4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 4
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.0.1.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.1.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.2.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.2.2 remote-as 49
+% Can not configure the local system as neighbor
+LOND_router(config-router)# neighbor 49.0.3.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.3.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.4.2 remote-as 49
+% Can not configure the local system as neighbor
+LOND_router(config-router)# neighbor 49.0.5.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.5.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.6.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.6.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.7.1 remote-as 49
+% Can not configure the local system as neighbor
+LOND_router(config-router)# neighbor 49.0.7.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.8.1 remote-as 49
+% Can not configure the local system as neighbor
+LOND_router(config-router)# neighbor 49.0.8.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.9.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.9.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.10.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.10.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.11.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.11.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.12.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.12.2 remote-as 49
+LOND_router(config-router)# neighbor 49.0.13.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.13.2 remote-as 49
+LOND_router(config-router)# 
+LOND_router(config-router)# neighbor 49.0.1.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.1.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.2.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.2.2 next-hop-self
+% Specify remote-as or peer-group commands first
+LOND_router(config-router)# neighbor 49.0.3.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.3.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.4.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.4.2 next-hop-self
+% Specify remote-as or peer-group commands first
+LOND_router(config-router)# neighbor 49.0.5.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.5.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.6.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.6.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.7.1 next-hop-self
+% Specify remote-as or peer-group commands first
+LOND_router(config-router)# neighbor 49.0.7.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.8.1 next-hop-self
+% Specify remote-as or peer-group commands first
+LOND_router(config-router)# neighbor 49.0.8.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.9.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.9.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.10.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.10.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.11.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.11.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.12.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.12.2 next-hop-self
+LOND_router(config-router)# neighbor 49.0.13.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.13.2 next-hop-self
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.1.2        4         49        15         8        0    0    0    never         Idle        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.1        4         49        15         9        0    0    0    never         Idle        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49       191       187        0    0    0 03:04:39            2        0
+49.0.5.1        4         49        15         7        0    0    0    never         Idle        0
+49.0.5.2        4         49         0         1        0    0    0    never       Active        0
+49.0.6.1        4         49        15         8        0    0    0    never         Idle        0
+49.0.6.2        4         49         0         0        0    0    0    never       Active        0
+49.0.7.2        4         49        34        34        0    0    0 00:31:43            0        0
+49.0.8.2        4         49        36        36        0    0    0 00:33:50            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49         0         0        0    0    0    never       Active        0
+49.0.10.1       4         49        15         6        0    0    0    never         Idle        0
+49.0.10.2       4         49         3         3        0    0    0 00:00:38            0        0
+49.0.11.1       4         49        15         6        0    0    0    never         Idle        0
+49.0.11.2       4         49         0         0        0    0    0    never       Active        0
+49.0.12.1       4         49        15         7        0    0    0    never         Idle        0
+49.0.12.2       4         49         0         0        0    0    0    never       Active        0
+49.0.13.1       4         49         0         0        0    0    0    never       Active        0
+49.0.13.2       4         49         0         0        0    0    0    never       Active        0
+
+Total number of neighbors 22
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 next-hop-self
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.1.2        4         49       287       206        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.1        4         49       249       176        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.1        4         49       263       181        0    0    0    never       Active        0
+49.0.5.2        4         49        47        48        0    0    0 00:44:21            0        0
+49.0.6.1        4         49       200       121        0    0    0    never       Active        0
+49.0.6.2        4         49        38        38        0    0    0 00:35:46            0        0
+49.0.7.2        4         49        80        80        0    0    0 01:17:15            0        0
+49.0.8.2        4         49        82        82        0    0    0 01:19:22            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       146        89        0    0    0    never         Idle        0
+49.0.10.1       4         49        66        56        0    0    0 00:45:00            0        0
+49.0.10.2       4         49        49        49        0    0    0 00:46:10            0        0
+49.0.11.1       4         49       169       109        0    0    0    never         Idle        0
+49.0.11.2       4         49        46        46        0    0    0 00:43:20            0        0
+49.0.12.1       4         49       158       102        0    0    0    never         Idle        0
+49.0.12.2       4         49        38        38        0    0    0 00:35:50            0        0
+49.0.13.1       4         49        46        46        0    0    0 00:43:15            0        0
+49.0.13.2       4         49        37        37        0    0    0 00:34:04            0        0
+49.153.0.1      4         49         0         1        0    0    0    never       Active        0
+
+Total number of neighbors 22
+LOND_router# ping 100.101.0.1
+connect: Network is unreachable
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.153.0.1 update-source Loopback0
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# ping 100.101.0.1
+connect: Network is unreachable
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 4
+RIB entries 0, using 0 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.1.2        4         49       287       210        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.1        4         49       249       180        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.1        4         49       263       184        0    0    0    never       Active        0
+49.0.5.2        4         49        54        55        0    0    0 00:51:31            0        0
+49.0.6.1        4         49       200       125        0    0    0    never       Active        0
+49.0.6.2        4         49        45        45        0    0    0 00:42:56            0        0
+49.0.7.2        4         49        87        87        0    0    0 01:24:25            0        0
+49.0.8.2        4         49        89        89        0    0    0 01:26:32            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       175       103        0    0    0    never         Idle        0
+49.0.10.1       4         49        73        63        0    0    0 00:52:10            0        0
+49.0.10.2       4         49        56        56        0    0    0 00:53:20            0        0
+49.0.11.1       4         49       178       112        0    0    0    never         Idle        0
+49.0.11.2       4         49        53        53        0    0    0 00:50:30            0        0
+49.0.12.1       4         49       170       107        0    0    0    never         Idle        0
+49.0.12.2       4         49        46        46        0    0    0 00:43:00            0        0
+49.0.13.1       4         49        53        53        0    0    0 00:50:25            0        0
+49.0.13.2       4         49        44        44        0    0    0 00:41:14            0        0
+49.153.0.1      4         49         0         2        0    0    0    never       Active        0
+
+Total number of neighbors 22
+LOND_router# ping 100.101.0.1
+connect: Network is unreachable
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# ip route 49.153.0.1 49.103.0.2 49.0.4.1
+LOND_router(config)# 
+LOND_router(config)# exit
+LOND_router# exit
+Connection to 158.49.10.1 closed.
+root@g49-proxy:~# ./goto.sh LOND router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.153.0.1
+LOND_router(config-router)# no neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.4.1 next-hop-self
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip route bgp
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+B>* 49.0.0.0/8 [200/0] via 49.0.4.1, port_PARI, weight 1, 00:00:34
+B>* 100.0.0.0/8 [200/0] via 49.0.4.1, port_PARI, weight 1, 00:00:14
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip route bgp
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# neighbor 49.0.4.1 next-hop-self
+LOND_router(config-router)# neighbor 49.0.4.1 update-source lo
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp
+BGP table version is 18, local router ID is 49.151.0.1, vrf id 0
+Default local pref 100, local AS 49
+Status codes:  s suppressed, d damped, h history, * valid, > best, = multipath,
+               i internal, r RIB-failure, S Stale, R Removed
+Nexthop codes: @NNN nexthop's vrf id, < announce-nh-self
+Origin codes:  i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop            Metric LocPrf Weight Path
+*>i49.0.0.0/8       49.0.4.1                 0    100      0 i
+*>i100.0.0.0/8      49.0.4.1                 0    100      0 100 i
+
+Displayed  2 routes and 2 total paths
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 18
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.1.2        4         49       293       216        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.1        4         49       255       187        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49        11        10        0    0    0 00:01:15            2        0
+49.0.5.1        4         49       318       234        0    0    0    never       Active        0
+49.0.5.2        4         49        65        66        0    0    0 01:02:28            0        0
+49.0.6.1        4         49       209       131        0    0    0    never       Active        0
+49.0.6.2        4         49        56        56        0    0    0 00:53:53            0        0
+49.0.7.2        4         49        98        98        0    0    0 01:35:22            0        0
+49.0.8.2        4         49       100       100        0    0    0 01:37:29            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       207       122        0    0    0    never         Idle        0
+49.0.10.1       4         49        84        74        0    0    0 01:03:07            0        0
+49.0.10.2       4         49        67        67        0    0    0 01:04:17            0        0
+49.0.11.1       4         49       236       148        0    0    0    never         Idle        0
+49.0.11.2       4         49        64        64        0    0    0 01:01:27            0        0
+49.0.12.1       4         49       185       114        0    0    0    never         Idle        0
+49.0.12.2       4         49        56        56        0    0    0 00:53:57            0        0
+49.0.13.1       4         49        64        64        0    0    0 01:01:22            0        0
+49.0.13.2       4         49        55        55        0    0    0 00:52:11            0        0
+
+Total number of neighbors 22
+LOND_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=62 time=2.77 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=62 time=2.21 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=62 time=2.34 ms
+^C
+--- 100.101.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 2.219/2.447/2.778/0.242 ms
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 next-hop-self
+LOND_router(config-router)# neighbor 49.153.0.1 update-source
+% Command incomplete: neighbor 49.153.0.1 update-source
+LOND_router(config-router)# neighbor 49.153.0.1 update-source lo
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 18
+RIB entries 3, using 576 bytes of memory
+Peers 23, using 490 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.1.2        4         49       293       216        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.1        4         49       255       188        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.4.1        4         49        12        11        0    0    0 00:02:57            2        0
+49.0.5.1        4         49       318       234        0    0    0    never       Active        0
+49.0.5.2        4         49        67        68        0    0    0 01:04:10            0        0
+49.0.6.1        4         49       209       132        0    0    0    never       Active        0
+49.0.6.2        4         49        58        58        0    0    0 00:55:35            0        0
+49.0.7.2        4         49       100       100        0    0    0 01:37:04            0        0
+49.0.8.2        4         49       102       102        0    0    0 01:39:11            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       210       123        0    0    0    never         Idle        0
+49.0.10.1       4         49        85        75        0    0    0 01:04:49            0        0
+49.0.10.2       4         49        68        68        0    0    0 01:05:59            0        0
+49.0.11.1       4         49       239       149        0    0    0    never         Idle        0
+49.0.11.2       4         49        66        66        0    0    0 01:03:09            0        0
+49.0.12.1       4         49       188       116        0    0    0    never         Idle        0
+49.0.12.2       4         49        58        58        0    0    0 00:55:39            0        0
+49.0.13.1       4         49        66        66        0    0    0 01:03:04            0        0
+49.0.13.2       4         49        56        56        0    0    0 00:53:53            0        0
+49.153.0.1      4         49         5         4        0    0    0 00:00:06            2        0
+
+Total number of neighbors 23
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.0.4.1
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 20
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.1.2        4         49       293       216        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.1        4         49       255       188        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.1        4         49       318       235        0    0    0    never       Active        0
+49.0.5.2        4         49        67        68        0    0    0 01:04:39            0        0
+49.0.6.1        4         49       209       132        0    0    0    never       Active        0
+49.0.6.2        4         49        59        59        0    0    0 00:56:04            0        0
+49.0.7.2        4         49       100       100        0    0    0 01:37:33            0        0
+49.0.8.2        4         49       102       102        0    0    0 01:39:40            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       210       123        0    0    0    never         Idle        0
+49.0.10.1       4         49        86        76        0    0    0 01:05:18            0        0
+49.0.10.2       4         49        69        69        0    0    0 01:06:28            0        0
+49.0.11.1       4         49       239       149        0    0    0    never         Idle        0
+49.0.11.2       4         49        66        66        0    0    0 01:03:38            0        0
+49.0.12.1       4         49       188       116        0    0    0    never         Idle        0
+49.0.12.2       4         49        59        59        0    0    0 00:56:08            0        0
+49.0.13.1       4         49        66        66        0    0    0 01:03:33            0        0
+49.0.13.2       4         49        57        57        0    0    0 00:54:22            0        0
+49.153.0.1      4         49         5         4        0    0    0 00:00:35            2        0
+
+Total number of neighbors 22
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 20
+RIB entries 3, using 576 bytes of memory
+Peers 22, using 469 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.0.1.1        4         49         0         0        0    0    0    never       Active        0
+49.0.1.2        4         49       293       217        0    0    0    never       Active        0
+49.0.2.1        4         49         0         0        0    0    0    never       Active        0
+49.0.3.1        4         49       255       189        0    0    0    never       Active        0
+49.0.3.2        4         49         0         0        0    0    0    never       Active        0
+49.0.5.1        4         49       318       236        0    0    0    never       Active        0
+49.0.5.2        4         49        69        70        0    0    0 01:06:31            0        0
+49.0.6.1        4         49       209       133        0    0    0    never       Active        0
+49.0.6.2        4         49        60        60        0    0    0 00:57:56            0        0
+49.0.7.2        4         49       102       102        0    0    0 01:39:25            0        0
+49.0.8.2        4         49       104       104        0    0    0 01:41:32            0        0
+49.0.9.1        4         49         0         0        0    0    0    never       Active        0
+49.0.9.2        4         49       213       124        0    0    0    never         Idle        0
+49.0.10.1       4         49        88        78        0    0    0 01:07:10            0        0
+49.0.10.2       4         49        71        71        0    0    0 01:08:20            0        0
+49.0.11.1       4         49       242       151        0    0    0    never         Idle        0
+49.0.11.2       4         49        68        68        0    0    0 01:05:30            0        0
+49.0.12.1       4         49       213       130        0    0    0    never         Idle        0
+49.0.12.2       4         49        60        61        0    0    0 00:58:00            0        0
+49.0.13.1       4         49        68        68        0    0    0 01:05:25            0        0
+49.0.13.2       4         49        59        59        0    0    0 00:56:14            0        0
+49.153.0.1      4         49         7         6        0    0    0 00:02:27            2        0
+
+Total number of neighbors 22
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# no neighbor 49.0.1.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.1.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.2.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.2.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.3.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.3.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.4.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.4.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.5.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.5.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.6.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.6.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.7.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.7.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.8.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.8.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.9.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.9.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.10.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.10.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.11.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.11.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.12.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.12.2 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.13.1 remote-as 49
+LOND_router(config-router)# no neighbor 49.0.13.2 remote-as 49
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 20
+RIB entries 3, using 576 bytes of memory
+Peers 1, using 21 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49        10         9        0    0    0 00:05:44            2        0
+
+Total number of neighbors 1
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.155.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.155.0.1 next-hop-self 
+LOND_router(config-router)# neighbor 49.155.0.1 update-source lo
+LOND_router(config-router)# neighbor 49.156.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.156.0.1 next-hop-self 
+LOND_router(config-router)# neighbor 49.156.0.1 update-source lo
+LOND_router(config-router)# neighbor 49.157.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.157.0.1 next-hop-self 
+LOND_router(config-router)# neighbor 49.157.0.1 update-source lo
+LOND_router(config-router)# neighbor 49.158.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.158.0.1 next-hop-self 
+LOND_router(config-router)# neighbor 49.158.0.1 update-source lo
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 20
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49        14        13        0    0    0 00:09:13            2        0
+49.155.0.1      4         49         0         2        0    0    0    never       Active        0
+49.156.0.1      4         49         0         2        0    0    0    never       Active        0
+49.157.0.1      4         49         0         2        0    0    0    never       Active        0
+49.158.0.1      4         49         0         2        0    0    0    never       Active        0
+
+Total number of neighbors 5
+LOND_router# 
+LOND_router# ping 100.101.0.1
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=62 time=2.90 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=62 time=2.41 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=62 time=2.44 ms
+^C
+--- 100.101.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 2.411/2.585/2.900/0.223 ms
+LOND_router# conf t
+LOND_router(config)# router bgp 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 remote-as 49
+LOND_router(config-router)# neighbor 49.153.0.1 next-hop-self 
+LOND_router(config-router)# neighbor 49.153.0.1 update-source lo
+LOND_router(config-router)# exiy
+% Unknown command: exiy
+LOND_router(config-router)# exit
+LOND_router(config)# exit
+LOND_router# show ip bgp sum
+
+IPv4 Unicast Summary:
+BGP router identifier 49.151.0.1, local AS number 49 vrf-id 0
+BGP table version 20
+RIB entries 3, using 576 bytes of memory
+Peers 5, using 107 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt
+49.153.0.1      4         49        15        14        0    0    0 00:10:06            2        0
+49.155.0.1      4         49         0         2        0    0    0    never       Active        0
+49.156.0.1      4         49         0         2        0    0    0    never       Active        0
+49.157.0.1      4         49         0         2        0    0    0    never       Active        0
+49.158.0.1      4         49         0         2        0    0    0    never       Active        0
+
+Total number of neighbors 5
+LOND_router# ping 100.101.0.1  
+PING 100.101.0.1 (100.101.0.1) 56(84) bytes of data.
+64 bytes from 100.101.0.1: icmp_seq=1 ttl=62 time=2.98 ms
+64 bytes from 100.101.0.1: icmp_seq=2 ttl=62 time=2.32 ms
+64 bytes from 100.101.0.1: icmp_seq=3 ttl=62 time=2.36 ms
+^C
+--- 100.101.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2001ms
+rtt min/avg/max/mdev = 2.322/2.557/2.989/0.310 ms
+LOND_router# 

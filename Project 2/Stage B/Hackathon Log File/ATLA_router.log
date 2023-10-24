@@ -1,0 +1,573 @@
+Linux g49-proxy 5.15.0-1021-gcp #28~20.04.1-Ubuntu SMP Mon Oct 17 11:37:54 UTC 2022 x86_64
++------------------------------------------------------+
+|                                                      |
+|   Columbia CSEE 4119 Fall 2022 - Routing Project     |
+|             Build your mini-Internet!                |
+|                                                      |
+|                                                      |
+|   You can modify this welcoming message by           |
+|   modifying the file welcoming_message.txt           |
+|   in the config directory                            |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|   ./goto.sh MIAM router                              |
+|                                                      |
++------------------------------------------------------+
+Last login: Tue Nov 29 19:50:56 2022 from 157.0.0.59
+root@g49-proxy:~# ./goto.sh PARI router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+PARI_router# show ip route ospf
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR, f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+
+O   49.0.1.0/24 [110/10] is directly connected, port_ZURI, weight 1, 5d17h26m
+O>* 49.0.2.0/24 [110/20] via 49.0.1.1, port_ZURI, weight 1, 18:02:05
+  *                      via 49.0.4.2, port_LOND, weight 1, 18:02:05
+O   49.0.3.0/24 [110/10] is directly connected, port_GENE, weight 1, 5d17h26m
+O   49.0.4.0/24 [110/10] is directly connected, port_LOND, weight 1, 5d18h35m
+O   49.0.5.0/24 [110/10] is directly connected, port_NEWY, weight 1, 5d17h26m
+O   49.0.6.0/24 [110/10] is directly connected, port_MIAM, weight 1, 5d17h26m
+O>* 49.0.7.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 5d17h27m
+O>* 49.0.8.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 5d15h42m
+  *                      via 49.0.5.2, port_NEWY, weight 1, 5d15h42m
+O>* 49.0.9.0/24 [110/20] via 49.0.3.2, port_GENE, weight 1, 18:05:13
+  *                      via 49.0.6.2, port_MIAM, weight 1, 18:05:13
+O>* 49.0.10.0/24 [110/20] via 49.0.5.2, port_NEWY, weight 1, 5d15h42m
+O>* 49.0.11.0/24 [110/20] via 49.0.5.2, port_NEWY, weight 1, 5d15h42m
+O>* 49.0.12.0/24 [110/20] via 49.0.5.2, port_NEWY, weight 1, 5d15h32m
+  *                       via 49.0.6.2, port_MIAM, weight 1, 5d15h32m
+O>* 49.0.13.0/24 [110/20] via 49.0.6.2, port_MIAM, weight 1, 5d15h32m
+O   49.0.198.0/24 [110/10] is directly connected, matrix_49, weight 1, 02w3d03h
+O>* 49.0.199.0/24 [110/20] via 49.0.1.1, port_ZURI, weight 1, 18:02:13
+O>* 49.101.0.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 5d15h57m
+O   49.103.0.0/24 [110/10] is directly connected, host, weight 1, 5d15h58m
+O>* 49.105.0.0/24 [110/20] via 49.0.5.2, port_NEWY, weight 1, 5d15h42m
+O>* 49.106.0.0/24 [110/30] via 49.0.4.2, port_LOND, weight 1, 5d15h38m
+  *                        via 49.0.5.2, port_NEWY, weight 1, 5d15h38m
+O>* 49.107.0.0/24 [110/30] via 49.0.5.2, port_NEWY, weight 1, 5d15h32m
+  *                        via 49.0.6.2, port_MIAM, weight 1, 5d15h32m
+O>* 49.108.0.0/24 [110/20] via 49.0.6.2, port_MIAM, weight 1, 5d15h32m
+O>* 49.151.0.1/32 [110/10] via 49.0.4.2, port_LOND, weight 1, 5d15h57m
+O>* 49.152.0.1/32 [110/10] via 49.0.1.1, port_ZURI, weight 1, 18:02:05
+O>* 49.153.0.1/32 [110/0] is directly connected, lo, weight 1, 5d15h58m
+O>* 49.154.0.1/32 [110/10] via 49.0.3.2, port_GENE, weight 1, 18:05:00
+O>* 49.155.0.1/32 [110/10] via 49.0.5.2, port_NEWY, weight 1, 5d15h42m
+O>* 49.156.0.1/32 [110/20] via 49.0.4.2, port_LOND, weight 1, 5d15h38m
+  *                        via 49.0.5.2, port_NEWY, weight 1, 5d15h38m
+O>* 49.157.0.1/32 [110/20] via 49.0.5.2, port_NEWY, weight 1, 5d15h32m
+  *                        via 49.0.6.2, port_MIAM, weight 1, 5d15h32m
+O>* 49.158.0.1/32 [110/10] via 49.0.6.2, port_MIAM, weight 1, 5d15h32m
+O>* 198.0.0.0/24 [110/20] via 49.0.4.2, port_LOND, weight 1, 5d16h05m
+PARI_router# exit
+Connection to 158.49.12.1 closed.
+root@g49-proxy:~# ./goto.sh ATLA router
+
+Hello, this is FRRouting (version 7.5).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+ATLA_router# conf t
+ATLA_router(config)# interface ext_48_ALTA
+ATLA_router(config-if)# ip address 48.49.0.2/24
+ATLA_router(config-if)# exit
+ATLA_router(config)# ping 48.49.0.1
+% Unknown command: ping 48.49.0.1
+ATLA_router(config)# exit
+ATLA_router# ping 48.49.0.1
+connect: Network is unreachable
+ATLA_router# conf t
+ATLA_router(config)# show interface
+% Unknown command: show interface
+ATLA_router(config)# exiy
+% Unknown command: exiy
+ATLA_router(config)# exit
+ATLA_router# show interface
+Interface ext_48_ALTA is down
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  pseudo interface
+Interface ext_52_ZURI is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:19:23.32
+  Link downs:     1    last: 2022/11/12 11:19:23.31
+  vrf: default
+  index 8412 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 3a:09:81:47:87:22
+  Interface Type VETH
+  Interface Slave Type None
+Interface host is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 05:57:58.24
+  Link downs:     1    last: 2022/11/12 05:57:58.24
+  vrf: default
+  index 1028 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 46:de:1b:06:db:13
+  inet 49.107.0.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface lo is up, line protocol is up
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  index 1 metric 0 mtu 65536 speed 0 
+  flags: <UP,LOOPBACK,RUNNING>
+  Type: Loopback
+  inet 49.157.0.1/24
+  Interface Type Other
+  Interface Slave Type None
+Interface port_MIAM is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:42:43.14
+  Link downs:     1    last: 2022/11/12 09:42:43.13
+  vrf: default
+  index 6196 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 2a:eb:d0:7d:7b:00
+  inet 49.0.13.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_NEWY is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:42:11.54
+  Link downs:     1    last: 2022/11/12 09:42:11.53
+  vrf: default
+  index 6190 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: fe:56:f1:07:ea:a2
+  inet 49.0.11.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ssh is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:50:52.08
+  Link downs:     1    last: 2022/11/12 11:50:52.08
+  vrf: default
+  index 11552 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 5a:ce:ae:06:c1:af
+  inet 158.49.16.1/16
+  Interface Type VETH
+  Interface Slave Type None
+ATLA_router# conf t
+ATLA_router(config)# interface ext_48_ALTA
+ATLA_router(config-if)# exit                      
+ATLA_router(config)# exit
+ATLA_router# ping 48.49.0.1
+connect: Network is unreachable
+ATLA_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# conf t
+ATLA_router(config)# interface ext_48_ALTA
+ATLA_router(config-if)# ip address 48.49.0.2/24
+ATLA_router(config-if)# exit
+ATLA_router(config)# exit
+ATLA_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# conf t
+ATLA_router(config)# interface ext_48_ALTA
+ATLA_router(config-if)# no ip address 48.49.0.2/24
+ATLA_router(config-if)# ip address 49.48.0.2/24
+ATLA_router(config-if)# exit 
+ATLA_router(config)# exit
+ATLA_router# ping 48.49.0.1
+connect: Network is unreachable
+ATLA_router# conf t
+ATLA_router(config)# interface ext_48_ALTA
+ATLA_router(config-if)# no ip address 49.48.0.2/24
+ATLA_router(config-if)# ip address 48.49.0.2/24
+ATLA_router(config-if)# exit
+ATLA_router(config)# exit
+ATLA_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# show run
+Building configuration...
+
+Current configuration:
+!
+frr version 7.5
+frr defaults traditional
+hostname ATLA_router
+no ipv6 forwarding
+!
+interface ext_48_ALTA
+ ip address 48.49.0.2/24
+!
+interface host
+ ip address 49.107.0.2/24
+!
+interface lo
+ ip address 49.157.0.1/24
+!
+interface port_MIAM
+ ip address 49.0.13.1/24
+!
+interface port_NEWY
+ ip address 49.0.11.2/24
+!
+router bgp 49
+ no bgp ebgp-requires-policy
+ no bgp network import-check
+ neighbor 49.151.0.1 remote-as 49
+ neighbor 49.151.0.1 update-source lo
+ neighbor 49.152.0.1 remote-as 49
+ neighbor 49.152.0.1 update-source lo
+ neighbor 49.153.0.1 remote-as 49
+ neighbor 49.153.0.1 update-source lo
+ neighbor 49.154.0.1 remote-as 49
+ neighbor 49.154.0.1 update-source lo
+ neighbor 49.155.0.1 remote-as 49
+ neighbor 49.155.0.1 update-source lo
+ neighbor 49.156.0.1 remote-as 49
+ neighbor 49.156.0.1 update-source lo
+ neighbor 49.158.0.1 remote-as 49
+ neighbor 49.158.0.1 update-source lo
+ !
+ address-family ipv4 unicast
+  neighbor 49.151.0.1 next-hop-self
+  neighbor 49.152.0.1 next-hop-self
+  neighbor 49.153.0.1 next-hop-self
+  neighbor 49.154.0.1 next-hop-self
+  neighbor 49.155.0.1 next-hop-self
+  neighbor 49.156.0.1 next-hop-self
+  neighbor 49.158.0.1 next-hop-self
+ exit-address-family
+!
+router ospf
+ network 49.0.11.0/24 area 0
+ network 49.0.13.0/24 area 0
+ network 49.107.0.0/24 area 0
+ network 49.157.0.0/24 area 0
+ network 198.0.0.0/24 area 0
+!
+line vty
+!
+end
+ATLA_router# conf t
+ATLA_router(config)# interface ext_52_ZURI
+ATLA_router(config-if)# ip address 48.49.0.2/24
+ATLA_router(config-if)# exit
+ATLA_router(config)# exit
+ATLA_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         48.49.0.2/24
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# conf t
+ATLA_router(config)# interface ext_48_ALTA
+ATLA_router(config-if)# no ip address 48.49.0.2/24
+ATLA_router(config-if)# ip address 48.49.0.2/24
+ATLA_router(config-if)# exit
+ATLA_router(config)# exit
+ATLA_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         48.49.0.2/24
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# show run
+Building configuration...
+
+Current configuration:
+!
+frr version 7.5
+frr defaults traditional
+hostname ATLA_router
+no ipv6 forwarding
+!
+interface ext_48_ALTA
+ ip address 48.49.0.2/24
+!
+interface ext_52_ZURI
+ ip address 48.49.0.2/24
+!
+interface host
+ ip address 49.107.0.2/24
+!
+interface lo
+ ip address 49.157.0.1/24
+!
+interface port_MIAM
+ ip address 49.0.13.1/24
+!
+interface port_NEWY
+ ip address 49.0.11.2/24
+!
+router bgp 49
+ no bgp ebgp-requires-policy
+ no bgp network import-check
+ neighbor 49.151.0.1 remote-as 49
+ neighbor 49.151.0.1 update-source lo
+ neighbor 49.152.0.1 remote-as 49
+ neighbor 49.152.0.1 update-source lo
+ neighbor 49.153.0.1 remote-as 49
+ neighbor 49.153.0.1 update-source lo
+ neighbor 49.154.0.1 remote-as 49
+ neighbor 49.154.0.1 update-source lo
+ neighbor 49.155.0.1 remote-as 49
+ neighbor 49.155.0.1 update-source lo
+ neighbor 49.156.0.1 remote-as 49
+ neighbor 49.156.0.1 update-source lo
+ neighbor 49.158.0.1 remote-as 49
+ neighbor 49.158.0.1 update-source lo
+ !
+ address-family ipv4 unicast
+  neighbor 49.151.0.1 next-hop-self
+  neighbor 49.152.0.1 next-hop-self
+  neighbor 49.153.0.1 next-hop-self
+  neighbor 49.154.0.1 next-hop-self
+  neighbor 49.155.0.1 next-hop-self
+  neighbor 49.156.0.1 next-hop-self
+  neighbor 49.158.0.1 next-hop-self
+ exit-address-family
+!
+router ospf
+ network 49.0.11.0/24 area 0
+ network 49.0.13.0/24 area 0
+ network 49.107.0.0/24 area 0
+ network 49.157.0.0/24 area 0
+ network 198.0.0.0/24 area 0
+!
+line vty
+!
+end
+ATLA_router# interface ext_48_ALTA
+% Unknown command: interface ext_48_ALTA
+ATLA_router# conf -t
+% Unknown command: conf -t
+ATLA_router# conf t
+ATLA_router(config)# interface ext_48_ALTA
+ATLA_router(config-if)# ip address ^C
+ATLA_router(config-if)# ip address 48.49.0.2/24
+ATLA_router(config-if)# exit
+ATLA_router(config)# exit
+ATLA_router# show interface brief
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         48.49.0.2/24
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# show interface
+Interface ext_48_ALTA is down
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  pseudo interface
+Interface ext_52_ZURI is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:19:23.32
+  Link downs:     1    last: 2022/11/12 11:19:23.31
+  vrf: default
+  index 8412 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 3a:09:81:47:87:22
+  inet 48.49.0.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface host is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 05:57:58.24
+  Link downs:     1    last: 2022/11/12 05:57:58.24
+  vrf: default
+  index 1028 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 46:de:1b:06:db:13
+  inet 49.107.0.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface lo is up, line protocol is up
+  Link ups:       0    last: (never)
+  Link downs:     0    last: (never)
+  vrf: default
+  index 1 metric 0 mtu 65536 speed 0 
+  flags: <UP,LOOPBACK,RUNNING>
+  Type: Loopback
+  inet 49.157.0.1/24
+  Interface Type Other
+  Interface Slave Type None
+Interface port_MIAM is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:42:43.14
+  Link downs:     1    last: 2022/11/12 09:42:43.13
+  vrf: default
+  index 6196 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 2a:eb:d0:7d:7b:00
+  inet 49.0.13.1/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface port_NEWY is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 09:42:11.54
+  Link downs:     1    last: 2022/11/12 09:42:11.53
+  vrf: default
+  index 6190 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: fe:56:f1:07:ea:a2
+  inet 49.0.11.2/24
+  Interface Type VETH
+  Interface Slave Type None
+Interface ssh is up, line protocol is up
+  Link ups:       1    last: 2022/11/12 11:50:52.08
+  Link downs:     1    last: 2022/11/12 11:50:52.08
+  vrf: default
+  index 11552 metric 0 mtu 1500 speed 10000 
+  flags: <UP,BROADCAST,RUNNING,MULTICAST>
+  Type: Unknown
+  HWaddr: 5a:ce:ae:06:c1:af
+  inet 158.49.16.1/16
+  Interface Type VETH
+  Interface Slave Type None
+ATLA_router# conf t
+ATLA_router(config)# interface ext_52_ZURI
+ATLA_router(config-if)# no ip address 48.49.0.2/24
+ATLA_router(config-if)# ip address 49.52.0.1/24
+ATLA_router(config-if)# exit
+ATLA_router(config)# exit
+ATLA_router# conf t
+ATLA_router(config)# router bgp 49
+ATLA_router(config-router)# neighbor 49.52.0.2 remote-as 52
+ATLA_router(config-router)# exit
+ATLA_router(config)# exit   
+ATLA_router# ping 49.52.0.2
+PING 49.52.0.2 (49.52.0.2) 56(84) bytes of data.
+64 bytes from 49.52.0.2: icmp_seq=1 ttl=64 time=2.40 ms
+64 bytes from 49.52.0.2: icmp_seq=2 ttl=64 time=2.20 ms
+64 bytes from 49.52.0.2: icmp_seq=3 ttl=64 time=2.14 ms
+64 bytes from 49.52.0.2: icmp_seq=4 ttl=64 time=2.11 ms
+64 bytes from 49.52.0.2: icmp_seq=5 ttl=64 time=2.10 ms
+64 bytes from 49.52.0.2: icmp_seq=6 ttl=64 time=2.27 ms
+64 bytes from 49.52.0.2: icmp_seq=7 ttl=64 time=2.15 ms
+64 bytes from 49.52.0.2: icmp_seq=8 ttl=64 time=2.14 ms
+64 bytes from 49.52.0.2: icmp_seq=9 ttl=64 time=2.17 ms
+64 bytes from 49.52.0.2: icmp_seq=10 ttl=64 time=2.16 ms
+64 bytes from 49.52.0.2: icmp_seq=11 ttl=64 time=2.16 ms
+64 bytes from 49.52.0.2: icmp_seq=12 ttl=64 time=2.16 ms
+64 bytes from 49.52.0.2: icmp_seq=13 ttl=64 time=6.47 ms
+64 bytes from 49.52.0.2: icmp_seq=14 ttl=64 time=2.12 ms
+64 bytes from 49.52.0.2: icmp_seq=15 ttl=64 time=2.22 ms
+64 bytes from 49.52.0.2: icmp_seq=16 ttl=64 time=2.21 ms
+64 bytes from 49.52.0.2: icmp_seq=17 ttl=64 time=2.16 ms
+64 bytes from 49.52.0.2: icmp_seq=18 ttl=64 time=2.15 ms
+64 bytes from 49.52.0.2: icmp_seq=19 ttl=64 time=2.12 ms
+64 bytes from 49.52.0.2: icmp_seq=20 ttl=64 time=2.12 ms
+64 bytes from 49.52.0.2: icmp_seq=21 ttl=64 time=2.12 ms
+64 bytes from 49.52.0.2: icmp_seq=22 ttl=64 time=2.14 ms
+64 bytes from 49.52.0.2: icmp_seq=23 ttl=64 time=2.20 ms
+64 bytes from 49.52.0.2: icmp_seq=24 ttl=64 time=2.10 ms
+64 bytes from 49.52.0.2: icmp_seq=25 ttl=64 time=2.12 ms
+64 bytes from 49.52.0.2: icmp_seq=26 ttl=64 time=2.22 ms
+64 bytes from 49.52.0.2: icmp_seq=27 ttl=64 time=2.10 ms
+64 bytes from 49.52.0.2: icmp_seq=28 ttl=64 time=2.14 ms
+64 bytes from 49.52.0.2: icmp_seq=29 ttl=64 time=2.17 ms
+64 bytes from 49.52.0.2: icmp_seq=30 ttl=64 time=2.21 ms
+64 bytes from 49.52.0.2: icmp_seq=31 ttl=64 time=2.12 ms
+^C
+--- 49.52.0.2 ping statistics ---
+31 packets transmitted, 31 received, 0% packet loss, time 30048ms
+rtt min/avg/max/mdev = 2.103/2.306/6.477/0.765 ms
+ATLA_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         49.52.0.1/24
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# conf t
+ATLA_router(config)# no interface ext_48_ATLA
+ATLA_router(config)# exit 
+ATLA_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         49.52.0.1/24
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# conf t
+ATLA_router(config)# no interface ext_48_ATLA
+ATLA_router(config)# exit
+ATLA_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_48_ALTA     down    default         
+ext_52_ZURI     up      default         49.52.0.1/24
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# conf t
+ATLA_router(config)# no interface ext_48_ALTA
+ATLA_router(config)# exit
+ATLA_router# show interface br
+Interface       Status  VRF             Addresses
+---------       ------  ---             ---------
+ext_52_ZURI     up      default         49.52.0.1/24
+host            up      default         49.107.0.2/24
+lo              up      default         49.157.0.1/24
+port_MIAM       up      default         49.0.13.1/24
+port_NEWY       up      default         49.0.11.2/24
+ssh             up      default         158.49.16.1/16
+
+ATLA_router# 
